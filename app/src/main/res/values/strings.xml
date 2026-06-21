@@ -1,0 +1,117 @@
+<resources>
+
+    <string name="app_name">Sie Mobile Loja</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_cardapio">Cardapio</string>
+    <string name="title_activity_consumo">Lançamento Consumo</string>
+    <string name="title_activity_parcial">Parcial do Consumo</string>
+    <string name="title_activity_menu">Menu</string>
+    <string name="title_activity_configuracoes">ConfiguracoesActivity</string>
+    <string name="title_activity_parcial_imprecao">ParcialImprecaoActivity</string>
+
+    <!-- Mensagens -->
+    <string name="aguarde">Aguarde.</string>
+    <string name="usuario_senha_incoretos">Usuáro e Senha Incorreto.</string>
+    <string name="campo_obrigatorio">Campos de preenchimento obrigatorio.</string>
+    <string name="impressao_realizada_com_sucesso">Impressão realizada com sucesso.</string>
+    <string name="item_nao_encontrado">Item não encontrado.</string>
+    <string name="procurando_item">Procurando Item.</string>
+    <string name="sem_cenexao_internat">Sem conexão com a Internet.</string>
+    <string name="falha_na_comunicacao_webservice">Falha na comunicação com o WebService.</string>
+    <string name="sincronizado">Sincronizado com sucesso.</string>
+    <string name="informe_codigo_quantidade">Informe o codigo do item e a quantidade.</string>
+    <string name="item_nao_existe">Esse item não existe.</string>
+    <string name="quantidade_maior_que_zero">A quantidade tem que ser maior que 0.</string>
+    <string name="informe_cartao">Informe o cartão.</string>
+    <string name="informe_item">Informe o item.</string>
+    <string name="item_lansado_incorretamente">Item lançado incorretamente.</string>
+    <string name="venda_finalizada">Venda finalizada com sucesso.</string>
+    <string name="venda_cancelado_com_sucesso">Venda cancelada com sucesso.</string>
+    <string name="erro_na_atualizacao_banco">Erro na atualização no banco.</string>
+    <string name="confirmar_cancelamento_venda">Tem certeza que quer CANCELAR a Venda?</string>
+    <string name="confirmar_sair_sistema_com_venda_aberto">Venda em aberto. Se você sair do sistema agora a venda será cancelado. Deseja sair do sistema?</string>
+    <string name="confirmar_sair_sistema">Deseja sair do sistema?</string>
+    <string name="todos_os_campos_sao_de_preenchimento_obrigatorio">Todos os campos são de preenchimento obrigatório.</string>
+    <string name="sincronizado_com_sucesso">Sincronizado com sucesso.</string>
+    <string name="salvo_com_sucesso">Salvo com sucesso.</string>
+    <string name="erro_no_json">Erro no JSON. </string>
+    <string name="erro_no_sql">Erro no SQL. </string>
+    <string name="erro_procurar_administrador">Erro, procurar administrador. </string>
+    <string name="nenhuma_venda_foi_encontrado">Nenhuma venda foi encontrado.</string>
+    <string name="nenhum_item_foi_lancado">Nenhum item foi lançado.</string>
+    <string name="acesso_restrito_entre_em_contato_com_o_administrador">Acesso restrito. Entre em contato com o administrador.</string>
+    <string name="email_enviado_com_sucesso">E-mail enviado com suscesso</string>
+
+    <!-- Butoes -->
+    <string name="entrar">Entrar</string>
+    <string name="imprimir">Imprimir</string>
+    <string name="venda">Venda</string>
+    <string name="relatorio">Relatorio</string>
+    <string name="produtos">Produtos</string>
+    <string name="sincronizar">Sincronizar</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="sair">Sair</string>
+    <string name="salvar">Salvar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="add_item">Adicionar Item</string>
+
+    <!-- Texto -->
+    <string name="usuario">Usuário</string>
+    <string name="senha">Senha</string>
+    <string name="numero_equipamento">Número do Equipamento</string>
+    <string name="unidade_setor">Unidade / Setor</string>
+    <string name="ip_do_banco_de_dados">IP do Banco de Dados</string>
+    <string name="nome_do_banco_de_dados">Nome do Banco de Dados</string>
+    <string name="nome_do_seguranca">Nome do Segurança</string>
+    <string name="tipo_de_teclado">Tipo de Teclado</string>
+    <string name="vendedor">Vendedor</string>
+    <string name="codigo">Codigo</string>
+    <string name="quantidade">Quantidade</string>
+    <string name="qtd">QTD</string>
+    <string name="telefone">(85) 3257 1853</string>
+    <string name="url">URL do WebService</string>
+    <string name="itens_da_venda">Itens da Venda</string>
+    <string name="dados_gerais">Dados Gerais</string>
+    <string name="data">Data</string>
+    <string name="usuario_pode_alterar_a_data_do_movimento">Usuário pode alterar a data do movimento?</string>
+
+    <string name="total_bruto">Total Bruto:</string>
+    <string name="total_taxa">Total Taxa:</string>
+    <string name="total_liquido">Total Liquido:</string>
+    <string name="total_de_itens">Total de Itens:</string>
+
+
+    <string name="informacoes_do_aplicativo">Informações do Aplicativo</string>
+    <string name="informacoes_sobre_o_dispositivo">Informações sobre o Dispositivo</string>
+    <string name="informacoes_sobre_o_acesso_wifi">Informações sobre o acesso Wi-Fi</string>
+    <string name="versao_do_aplicativo">Versão do Aplicativo</string>
+    <string name="versao_do_banco">Versão do Banco</string>
+    <string name="armazenamento_da_aplicacao">Armazenamento da Aplicação</string>
+    <string name="armazenamento_de_dados">Armazenamento de Dados</string>
+    <string name="armazenamento_total">Armazenamento Total</string>
+    <string name="numero_do_equipamento">Número do Equipamento</string>
+    <string name="versao_do_android">Versão do Android</string>
+    <string name="versao_do_web_service">Versão do Web Service</string>
+    <string name="ip_do_web_service">IP do Web Service</string>
+    <string name="numero_do_modelo">Número do Modelo</string>
+    <string name="rede_wifi">Rede Wi-Fi</string>
+    <string name="intensidade_do_sinal">Intensidade do Sinal</string>
+    <string name="velocidade_de_conexao">Velocidade de Conexão</string>
+    <string name="seguranca">Segurança</string>
+    <string name="endereco_ip">Endereço IP</string>
+
+    <!-- Texto Temporario -->
+    <string name="ip">192.168.1.2</string>
+    <string name="imagem">imagem</string>
+    <string name="nome_produto">Produto</string>
+    <string name="observacao">Observação</string>
+    <string name="descricao_produto">Descrição do Produto</string>
+    <string name="preco">R$ 0,00</string>
+    <string name="total_quantidade">0</string>
+
+    <string-array name="typeKey">
+        <item>Numerico</item>
+        <item>Texto</item>
+    </string-array>
+</resources>

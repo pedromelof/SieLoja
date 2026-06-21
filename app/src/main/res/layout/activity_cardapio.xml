@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:paddingTop="@dimen/margin_15">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_toLeftOf="@+id/button_filtro_grupo"
+        android:background="@drawable/edit_text_pesquisa" >
+
+        <ImageView
+            android:id="@+id/image_pesquisa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_pesquisa"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_10" />
+
+        <AutoCompleteTextView
+            android:id="@+id/autocomplete_pesquisa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_10" >
+
+            <requestFocus />
+        </AutoCompleteTextView>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_view_pesquisa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/white"
+        android:layout_marginTop="@dimen/margin_15"
+        android:layout_below="@+id/linearLayout1" >
+
+    </ListView>
+
+    <ImageButton
+        android:id="@+id/button_filtro_idioma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_filtro_grupo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_bandeira_br" />
+
+    <ImageButton
+        android:id="@+id/button_filtro_grupo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearLayout1"
+        android:layout_alignTop="@+id/linearLayout1"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_toLeftOf="@+id/button_filtro_idioma"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_btn_filtro" />
+
+</RelativeLayout>

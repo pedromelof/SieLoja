@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_10"
+    android:paddingRight="@dimen/margin_15" >
+
+    <TextView
+        android:id="@+id/textItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/textUnidade"
+        android:text="@string/item_nao_encontrado"
+        android:layout_marginRight="@dimen/margin_05"
+        android:maxLines="1"
+        android:textColor="@color/text_color"/>
+
+    <TextView
+        android:id="@+id/textUnidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textQuantidade"
+        android:text="UND"
+        android:textColor="@color/text_color" />
+
+    <TextView
+        android:id="@+id/textQuantidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textValorTotal"
+        android:text="@string/total_quantidade"
+        android:textColor="@color/text_color"
+        android:gravity="right"
+        android:width="40dp"/>
+
+    <TextView
+        android:id="@+id/textValorTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="@string/preco"
+        android:gravity="right"
+        android:textColor="@color/text_color"
+        android:width="100dp" />
+
+</RelativeLayout>

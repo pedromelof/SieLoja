@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/margin_15"
+        android:paddingTop="@dimen/margin_15" >
+
+        <TextView
+            android:id="@+id/textInfAplicativo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:text="@string/informacoes_do_aplicativo"
+            android:textColor="@color/text_color" />
+
+        <RelativeLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textInfAplicativo"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@android:color/white"
+            android:padding="@dimen/margin_10" >
+
+            <TextView
+                android:id="@+id/textViewVercaoApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/versao_do_aplicativo"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textVercaoApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewVercaoApp"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewVercaoApp"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textViewVercaoWebService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/textViewVercaoApp"
+                android:layout_below="@+id/textViewVercaoApp"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/versao_do_web_service"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textVercaoWebService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewVercaoWebService"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewVercaoWebService"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textViewIpWebService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/editTextIpWebService"
+                android:layout_alignBottom="@+id/editTextIpWebService"
+                android:layout_alignLeft="@+id/textViewVercaoWebService"
+                android:layout_alignRight="@+id/textViewVercaoWebService"
+                android:text="@string/ip_do_web_service"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/editTextIpWebService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/editTextNumeroEquipamento"
+                android:layout_below="@+id/textVercaoWebService"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewIpWebService"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textViewNumeroEquipamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/editTextNumeroEquipamento"
+                android:layout_alignBottom="@+id/editTextNumeroEquipamento"
+                android:layout_alignLeft="@+id/textViewIpWebService"
+                android:layout_alignRight="@+id/textViewIpWebService"
+                android:text="@string/numero_do_equipamento"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/editTextNumeroEquipamento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextIpWebService"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewNumeroEquipamento"
+                android:ems="10"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textViewUnidade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/editTextUnidade"
+                android:layout_alignBottom="@+id/editTextUnidade"
+                android:layout_alignLeft="@+id/textViewNumeroEquipamento"
+                android:layout_alignRight="@+id/textViewNumeroEquipamento"
+                android:text="@string/unidade_setor"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/editTextUnidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextNumeroEquipamento"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewUnidade"
+                android:ems="10"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textViewIpBancoDeDados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/editTextIpBancoDeDados"
+                android:layout_alignBottom="@+id/editTextIpBancoDeDados"
+                android:layout_alignLeft="@+id/textViewUnidade"
+                android:layout_alignRight="@+id/textViewUnidade"
+                android:text="@string/ip_do_banco_de_dados"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/editTextIpBancoDeDados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextUnidade"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewIpBancoDeDados"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textViewNomeBancoDeDados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/editTextNomeBancoDeDados"
+                android:layout_alignBottom="@+id/editTextNomeBancoDeDados"
+                android:layout_alignLeft="@+id/textViewIpBancoDeDados"
+                android:layout_alignRight="@+id/textViewIpBancoDeDados"
+                android:text="@string/nome_do_banco_de_dados"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/editTextNomeBancoDeDados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextIpBancoDeDados"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewNomeBancoDeDados"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textViewSeguranca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/editTextSeguranca"
+                android:layout_alignBottom="@+id/editTextSeguranca"
+                android:layout_alignLeft="@+id/textViewNomeBancoDeDados"
+                android:layout_alignRight="@+id/textViewNomeBancoDeDados"
+                android:text="@string/nome_do_seguranca"
+                android:textColor="@color/text_color" />
+
+            <EditText
+                android:id="@+id/editTextSeguranca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextNomeBancoDeDados"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewSeguranca"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/textViewTypeKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/spinnerTypeKey"
+                android:layout_alignBottom="@+id/spinnerTypeKey"
+                android:layout_alignLeft="@+id/textViewSeguranca"
+                android:layout_alignRight="@+id/textViewSeguranca"
+                android:text="@string/tipo_de_teclado"
+                android:textColor="@color/text_color" />
+
+            <Spinner
+                android:id="@+id/spinnerTypeKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextSeguranca"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewTypeKey"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+            </Spinner>
+
+            <Switch
+                android:id="@+id/switchAlterarData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_below="@+id/spinnerTypeKey"
+                android:textColor="@color/text_color"
+                android:text="@string/usuario_pode_alterar_a_data_do_movimento" />
+
+            <Button
+                android:id="@+id/buttonSalvar"
+                style="@style/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/switchAlterarData"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="@string/salvar" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_inf_dispositivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/linearLayout1"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_20"
+            android:text="@string/informacoes_sobre_o_dispositivo"
+            android:textColor="@color/text_color" />
+
+        <RelativeLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/text_inf_dispositivo"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_10" >
+
+            <TextView
+                android:id="@+id/textViewVercaoAndroid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/versao_do_android"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textVercaoAndroid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewVercaoAndroid"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewVercaoAndroid"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textViewNumeroDoModelo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/textViewVercaoAndroid"
+                android:layout_below="@+id/textViewVercaoAndroid"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/numero_do_modelo"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textNumeroDoModelo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewNumeroDoModelo"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewNumeroDoModelo"
+                android:text="0"
+                android:textColor="@color/text_color" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_inf_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_20"
+            android:text="@string/informacoes_sobre_o_acesso_wifi"
+            android:textColor="@color/text_color" />
+
+        <RelativeLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/text_inf_wifi"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_10" >
+
+            <TextView
+                android:id="@+id/textViewRedeWifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/rede_wifi"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textViewVelocidadeDeConexao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textViewRedeWifi"
+                android:layout_alignRight="@+id/textViewRedeWifi"
+                android:layout_below="@+id/textViewRedeWifi"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/velocidade_de_conexao"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textViewEnderecoIP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textViewVelocidadeDeConexao"
+                android:layout_alignRight="@+id/textViewVelocidadeDeConexao"
+                android:layout_below="@+id/textViewVelocidadeDeConexao"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/endereco_ip"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textWifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewRedeWifi"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewRedeWifi"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textVelocidade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewVelocidadeDeConexao"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewVelocidadeDeConexao"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/textIP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textViewEnderecoIP"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_toRightOf="@+id/textViewEnderecoIP"
+                android:text="0"
+                android:textColor="@color/text_color" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

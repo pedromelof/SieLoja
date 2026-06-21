@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_10"
+    android:paddingRight="@dimen/margin_15" >
+
+    <TextView
+        android:id="@+id/textPed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/item_nao_encontrado"
+        android:layout_marginRight="@dimen/margin_05"
+        android:maxLines="1"
+        android:textColor="@color/text_color" />
+
+    <!--
+            <TextView
+            android:id="@+id/textTotalItens"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/listView"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/total_de_itens"
+            android:textColor="@color/text_color" />
+    !-->
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textPed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/margin_10"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null" >
+    </ListView>
+
+</RelativeLayout>

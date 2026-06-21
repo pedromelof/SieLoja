@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="@dimen/margin_15">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/margin_10"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/textTotalItens"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/listView"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/total_de_itens"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textValorTotalItens"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/listView"
+            android:layout_marginRight="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/total_quantidade"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textBruto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textTotalItens"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/total_bruto"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textValorBruto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textValorTotalItens"
+            android:layout_marginRight="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/preco"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textTaxa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textBruto"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/total_taxa"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textValorTaxa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textValorBruto"
+            android:layout_marginRight="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/preco"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textLiquido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textTaxa"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/total_liquido"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textValorLiquido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textValorTaxa"
+            android:layout_marginRight="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_05"
+            android:text="@string/preco"
+            android:textColor="@color/text_color" />
+
+
+
+        <!-- <Button -->
+        <!-- android:id="@+id/buttonSalvar" -->
+        <!-- style="@style/button" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:layout_alignParentLeft="true" -->
+        <!-- android:layout_alignParentRight="true" -->
+        <!-- android:layout_below="@+id/textValorBruto" -->
+        <!-- android:layout_marginBottom="@dimen/margin_20" -->
+        <!-- android:layout_marginTop="@dimen/margin_20" -->
+        <!-- android:text="@string/salvar" /> -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_below="@+id/textLiquido"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_20" >
+
+            <Button
+                android:id="@+id/buttonSalvar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_05"
+                android:text="@string/salvar"
+                android:layout_weight="1"
+                style="@style/button" />
+
+            <Button
+                android:id="@+id/buttonImpri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_05"
+                android:text="@string/imprimir"
+                android:layout_weight="1"
+                style="@style/button" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mono_azul2" >
+
+    <!--<include
+        android:id="@+id/topbar"
+        layout="@layout/activity_topbar" />-->
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:weightSum="2" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:layout_marginRight="1dp"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/button_consumo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_venda"
+                style="@style/button_menu"
+                android:layout_marginBottom="1dp"
+                android:text="@string/venda" />
+
+            <Button
+                android:id="@+id/button_cardapio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_produto"
+                style="@style/button_menu"
+                android:layout_marginBottom="1dp"
+                android:text="@string/produtos" />
+
+            <Button
+                android:id="@+id/button_sincronizar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_sincronizar"
+                style="@style/button_menu"
+                android:text="@string/sincronizar" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/button_parcial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_parcial"
+                style="@style/button_menu"
+                android:layout_marginBottom="1dp"
+                android:text="@string/relatorio" />
+
+            <Button
+                android:id="@+id/button_configuracoes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_configuracoes"
+                style="@style/button_menu"
+                android:layout_marginBottom="1dp"
+                android:text="@string/configuracoes" />
+
+            <Button
+                android:id="@+id/button_sair"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_sair"
+                style="@style/button_menu"
+                android:text="@string/sair" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

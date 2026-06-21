@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="vermelho">#950A0A</color>
+    <color name="background">#C4C4C4</color>
+    <color name="background_login">#E3E3E3</color>
+    <color name="background_edit_text">#deded5</color>
+    <color name="background_list_item_1">#F5F5F5</color>
+    <color name="background_list_item_2">#E8E8E8</color>
+    <color name="color_hint">#A3A3A3</color>
+    <color name="text_color">#636363</color>
+    <color name="button_color">#21446B</color>
+    <color name="button_state_color">#7092B7</color>
+    <color name="button_color_menu">#112438</color>
+
+    <!--     paleta de cores Monochromatic Azul -->
+    <!-- 	<color name="mono_azul1">#3975B7</color> -->
+    <color name="mono_azul2">#506884</color>
+
+    <!--     paleta de cores Shades Cinza -->
+    <!-- 	<color name="shad_cinza3">#E3E3E3</color> -->
+    <!-- 	<color name="shad_cinza4">#F0F0F0</color> -->
+    <!-- 	<color name="shad_cinza5">#C9C9C9</color> -->
+</resources>

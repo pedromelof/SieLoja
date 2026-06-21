@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btn_data"
+                android:layout_width="207dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:background="@android:color/white"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/margin_10"
+                android:text="@string/data"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" />
+
+            <Button
+                android:id="@+id/btn_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:background="@android:color/white"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/margin_10"
+                android:text="@string/data"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_15"
+            android:text="Cliente" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" >
+
+            <Spinner
+                android:id="@+id/spinnerCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="Tipo de Pagamento" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="Forma de Pagamento" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:background="@android:color/white"
+            android:weightSum="2">
+
+            <Spinner
+                android:id="@+id/spinnerTipoP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" />
+
+            <Spinner
+                android:id="@+id/spinnerFormaP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_15"
+            android:text="@string/add_item"
+            android:textColor="@color/text_color" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingRight="@dimen/margin_10" >
+
+            <AutoCompleteTextView
+                android:id="@+id/btn_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/btn_qtd"
+                android:layout_weight="3"
+                android:background="@drawable/edit_text"
+                android:gravity="left"
+                android:hint="@string/nome_produto"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" >
+
+                <requestFocus />
+            </AutoCompleteTextView>
+
+            <EditText
+                android:id="@+id/btn_qtd"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignTop="@+id/btn_add"
+                android:layout_toLeftOf="@+id/btn_valor"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text"
+                android:gravity="left"
+                android:hint="@string/qtd"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" />
+
+            <EditText
+                android:id="@+id/btn_valor"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignTop="@+id/btn_add"
+                android:layout_marginRight="@dimen/margin_15"
+                android:layout_toLeftOf="@+id/btn_add"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text"
+                android:gravity="left"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/color_hint" />
+
+            <ImageButton
+                android:id="@+id/btn_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/btn_item"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/btn_item"
+                android:layout_weight="2"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_btn_add" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_15"
+            android:text="@string/itens_da_venda"
+            android:textColor="@color/text_color" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null" >
+        </ListView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_20"
+            android:weightSum="2" >
+
+            <Button
+                android:id="@+id/button_finalizar"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_05"
+                android:layout_weight="1"
+                android:text="@string/confirmar" />
+
+            <Button
+                android:id="@+id/button_cancelar"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_05"
+                android:layout_weight="1"
+                android:text="@string/cancelar" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_parcial"
+            style="@style/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_weight="7.10"
+            android:text="@string/relatorio" />
+    </LinearLayout>
+
+</ScrollView>
