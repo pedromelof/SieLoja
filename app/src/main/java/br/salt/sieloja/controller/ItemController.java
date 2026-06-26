@@ -30,6 +30,8 @@ import br.salt.sieloja.view.util.BaseActivity;
 public class ItemController extends DatabaseManager {
 
     @Bean
+
+    private static ItemController instance;
     GrupoController grupoController;
 
     @Bean
@@ -38,6 +40,10 @@ public class ItemController extends DatabaseManager {
     @RestService
     Request request;
 
+    public static ItemController getInstance(Context context) {
+        if (instance == null) instance = new ItemController(context);
+        return instance;
+    }
     public ItemController(Context context) {
         super(context);
     }

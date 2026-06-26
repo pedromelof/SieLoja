@@ -7,10 +7,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
+
+
+
+
 
 import java.sql.SQLException;
 import java.util.List;

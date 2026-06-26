@@ -28,8 +28,6 @@ import br.salt.sieloja.view.adapter.CardapioAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_cardapio)
 public class CardapioActivity extends BaseActivity {
 
     @ViewById
@@ -49,6 +47,15 @@ public class CardapioActivity extends BaseActivity {
     private List<String> grupos;
     private List<String> selectedItens;
     private String[] listGrupos;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cardapio);
+    }
 
     final OnClickListener onClickListenerIdioma = new OnClickListener() {
         @Override

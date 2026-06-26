@@ -27,11 +27,17 @@ import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 public class SubgrupoController extends DatabaseManager {
 
     @RestService
+
+    private static SubgrupoController instance;
     Request request;
 
     @Bean
     ConfiguracoesController configuracoesController;
 
+    public static SubgrupoController getInstance(Context context) {
+        if (instance == null) instance = new SubgrupoController(context);
+        return instance;
+    }
     public SubgrupoController(Context context) {
         super(context);
     }

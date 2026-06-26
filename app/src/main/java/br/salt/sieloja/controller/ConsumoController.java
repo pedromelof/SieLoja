@@ -34,6 +34,8 @@ import br.salt.sieloja.rest.responseobject.Retorno;
 public class ConsumoController extends DatabaseManager {
 
     @RestService
+
+    private static ConsumoController instance;
     Request request;
 
     @Bean
@@ -42,6 +44,12 @@ public class ConsumoController extends DatabaseManager {
     @Bean
     ItemController itemController;
 
+    public static synchronized ConsumoController getInstance(Context context) {
+        if (instance == null) {
+            instance = new ConsumoController(context.getApplicationContext());
+        }
+        return instance;
+    }
     public ConsumoController(Context context) {
         super(context);
     }

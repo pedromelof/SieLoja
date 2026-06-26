@@ -28,11 +28,18 @@ import br.salt.sieloja.rest.responseobject.RetornoFormaPagamento;
 public class ClienteController extends DatabaseManager {
 
     @RestService
+    private static ClienteController instance;
     Request request;
 
     @Bean
     ConfiguracoesController configuracoesController;
 
+    public static synchronized ClienteController getInstance(Context context) {
+        if (instance == null) {
+            instance = new ClienteController(context.getApplicationContext());
+        }
+        return instance;
+    }
     public ClienteController(Context context) {
         super(context);
     }

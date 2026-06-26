@@ -28,11 +28,17 @@ import br.salt.sieloja.rest.responseobject.RetornoGrupo;
 public class GrupoController extends DatabaseManager {
 
     @RestService
+    private static GrupoController instance;
+    
     Request request;
 
     @Bean
     ConfiguracoesController configuracoesController;
 
+    public static GrupoController getInstance(Context context) {
+        if (instance == null) instance = new GrupoController(context);
+        return instance;
+    }
     public GrupoController(Context context) {
         super(context);
     }

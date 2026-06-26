@@ -37,6 +37,8 @@ import br.salt.sieloja.rest.responseobject.RetornoParcial;
 public class ParcialController extends DatabaseManager {
 
     @RestService
+    private static ParcialController instance;
+    
     Request request;
 
     @Bean
@@ -51,6 +53,10 @@ public class ParcialController extends DatabaseManager {
     @Bean
     UsuarioController usuarioController;
 
+    public static ParcialController getInstance(Context context) {
+        if (instance == null) instance = new ParcialController(context);
+        return instance;
+    }
     public ParcialController(Context context) {
         super(context);
     }

@@ -28,11 +28,17 @@ import br.salt.sieloja.rest.responseobject.RetornoCodBarra;
 public class CodBarraController extends DatabaseManager {
 
     @RestService
+
+    private static CodBarraController instance;
     Request request;
 
     @Bean
     ConfiguracoesController configuracoesController;
 
+    public static CodBarraController getInstance(Context context) {
+        if (instance == null) instance = new CodBarraController(context);
+        return instance;
+    }
     public CodBarraController(Context context) { super(context); }
 
     public List<CodBarra> getListCodBarra(String codItem) throws SQLException{

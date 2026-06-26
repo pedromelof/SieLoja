@@ -7,23 +7,21 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.Normalizer;
 
 import br.salt.sieloja.R;
-import br.salt.sieloja.bean.Cliente;
 import br.salt.sieloja.controller.ClienteController;
 import br.salt.sieloja.controller.CodBarraController;
 import br.salt.sieloja.controller.ConfiguracoesController;
@@ -80,6 +78,28 @@ public class BaseActivity extends FragmentActivity {
 
     @Bean
     protected CodBarraController codBarraController;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Instanciando controllers (pós annotation)
+        inicializarControllers();
+    }
+
+    private void inicializarControllers() {
+        this.clienteController = ClienteController.getInstance(this);
+        this.configuracoesController = ConfiguracoesController.getInstance(this);
+        this.consumoController = ConsumoController.getInstance(this);
+        this.empresaController = EmpresaController.getInstance(this);
+        this.grupoController = GrupoController.getInstance(this);
+        this.idiomaController = IdiomaController.getInstance(this);
+        this.itemController = ItemController.getInstance(this);
+        this.parcialController = ParcialController.getInstance(this);
+        this.subgrupoController = SubgrupoController.getInstance(this);
+        this.tabelaController = TabelaController.getInstance(this);
+        this.usuarioController = UsuarioController.getInstance(this);
+        this.codBarraController = CodBarraController.getInstance(this);
+    }
 
     @Override
     protected void onResume() {

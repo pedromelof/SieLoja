@@ -29,11 +29,17 @@ import br.salt.sieloja.rest.responseobject.RetornoTipoPag;
 public class TabelaController extends DatabaseManager {
 
     @RestService
+
+    private static TabelaController instance;
     Request request;
 
     @Bean
     ConfiguracoesController configuracoesController;
 
+    public static TabelaController getInstance(Context context) {
+        if (instance == null) instance = new TabelaController(context);
+        return instance;
+    }
     public TabelaController(Context context) {
         super(context);
     }

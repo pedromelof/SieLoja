@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -26,8 +27,6 @@ import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
 @SuppressLint("NonConstantResourceId")
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_configuracoes)
 public class ConfiguracoesActivity extends BaseActivity {
 
     @ViewById
@@ -87,6 +86,14 @@ public class ConfiguracoesActivity extends BaseActivity {
 
     private Configuracoes configuracoes;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_configuracoes);
+    }
     @SuppressLint("SetTextI18n")
     @AfterViews
     public void afterView(){

@@ -24,15 +24,22 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_menu)
 public class MenuActivity extends BaseActivity {
 
     @RestService
+    
     Request request;
 
     private DatePicker datePicker;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+    }
+    
     final OnClickListener onClickListenerLogaut = new OnClickListener() {
         @Override
         public void onClick(DialogInterface arg0, int arg1) {

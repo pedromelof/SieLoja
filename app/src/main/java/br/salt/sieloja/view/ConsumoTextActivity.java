@@ -15,15 +15,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
+
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -49,8 +49,6 @@ import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 import br.salt.sieloja.view.util.ConsumoActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_consumo_text)
 public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity {
 
     @ViewById
@@ -93,6 +91,16 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
     private Consumo consumo;
     private Usuario usuario;
     private Item item;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_consumo_text);
+    }
+
 
     final OnClickListener onClickListener = new OnClickListener() {
         @Override

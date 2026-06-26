@@ -26,12 +26,16 @@ import br.salt.sieloja.rest.responseobject.RetornoIdioma;
 @EBean
 public class IdiomaController extends DatabaseManager {
 
-    @RestService
+    
     Request request;
 
     @Bean
     ConfiguracoesController configuracoesController;
 
+    public static IdiomaController getInstance(Context context) {
+        if (instance == null) instance = new IdiomaController(context);
+        return instance;
+    }
     public IdiomaController(Context context) {
         super(context);
     }

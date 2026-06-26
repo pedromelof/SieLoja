@@ -46,8 +46,6 @@ import br.salt.sieloja.view.adapter.ParcialAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_parcial)
 public class ParcialActivity extends BaseActivity {
 
     @Extra
@@ -73,11 +71,17 @@ public class ParcialActivity extends BaseActivity {
 
     private Template template;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_parcial);
+    }
+
     @AfterViews
     public void afterView(){
         try {
             listView.setAdapter(adapter);
-            calculeHeightListView();
 
             DecimalFormat form  = new DecimalFormat("###,##0.00");
             double bruto = parcialController.getTotal();

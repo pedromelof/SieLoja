@@ -32,8 +32,15 @@ public class EmpresaController extends DatabaseManager {
     @Bean
     ConfiguracoesController configuracoesController;
 
+    private static EmpresaController instance;
+
     public EmpresaController(Context context) {
         super(context);
+    }
+
+    public static EmpresaController getInstance(Context context) {
+        if (instance == null) instance = new EmpresaController(context);
+        return instance;
     }
 
     /**
