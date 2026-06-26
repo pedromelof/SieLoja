@@ -2,15 +2,15 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -19,25 +19,33 @@ import java.util.List;
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Grupo;
 import br.salt.sieloja.bean.Item;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoItem;
+import br.salt.sieloja.rest.responseobject.RetornoUsuario;
 import br.salt.sieloja.view.util.BaseActivity;
+import retrofit2.Call;
 
-@EBean
+
 public class ItemController extends DatabaseManager {
 
     @Bean
+
+    private static ItemController instance;
     GrupoController grupoController;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
-    @RestService
+    
     Request request;
 
+    public static ItemController getInstance(Context context) {
+        if (instance == null) instance = new ItemController(context);
+        return instance;
+    }
     public ItemController(Context context) {
         super(context);
     }
@@ -156,7 +164,8 @@ public class ItemController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoItem retorno = request.requestItem(envio);
+        Call<RetornoItem> call = request.requestItem(envio);
+        RetornoItem retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<Item, Integer> deleteBuilder = getHelper().getItemDao().deleteBuilder();
             deleteBuilder.delete();

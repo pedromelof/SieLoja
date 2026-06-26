@@ -2,13 +2,13 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.stmt.DeleteBuilder;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -17,23 +17,31 @@ import java.util.List;
 
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Empresa;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoEmpresa;
+import retrofit2.Call;
 
-@EBean
+
 public class EmpresaController extends DatabaseManager {
 
-    @RestService
+    
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
+
+    private static EmpresaController instance;
 
     public EmpresaController(Context context) {
         super(context);
+    }
+
+    public static EmpresaController getInstance(Context context) {
+        if (instance == null) instance = new EmpresaController(context);
+        return instance;
     }
 
     /**
@@ -78,7 +86,8 @@ public class EmpresaController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoEmpresa retorno = request.requestEmpresa(envio);
+        Call<RetornoEmpresa> call = request.requestEmpresa(envio);
+        RetornoEmpresa retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<Empresa, Integer> deleteBuilder = getHelper().getEmpresaDao().deleteBuilder();
             deleteBuilder.delete();

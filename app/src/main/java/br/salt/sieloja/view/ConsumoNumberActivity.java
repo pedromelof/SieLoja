@@ -3,6 +3,7 @@ package br.salt.sieloja.view;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +17,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -50,41 +50,39 @@ import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 import br.salt.sieloja.view.util.ConsumoActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_consumo_number)
 public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivity {
 
-    @ViewById
+    
     AutoCompleteTextView btn_item;
 
-    @ViewById
+    
     Button btn_data;
 
-    @ViewById
+    
     Button btn_total;
 
-    @ViewById
+    
     EditText btn_qtd;
 
-    @ViewById
+    
     EditText btn_valor;
 
-    @ViewById
+    
     ListView listView;
 
-    @ViewById
+    
     Spinner spinnerCliente;
 
-    @ViewById
+    
     Spinner spinnerTipoP;
 
-    @ViewById
+    
     Spinner spinnerFormaP;
 
-    @Bean
+    
     ConsumoAdapter adapter;
 
-    @RestService
+    
     Request request;
 
     private List<CodBarra> codBarra;
@@ -94,6 +92,15 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
     private Consumo consumo;
     private Usuario usuario;
     private Item item;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_consumo_number);
+    }
 
     final OnClickListener onClickListener = new OnClickListener() {
         @Override
@@ -292,7 +299,8 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         try {
             if(consumoController.getAllItemConsumo().size() > 0){
                 parcialController.transformarConsumoEmParcial();
-                ParcialActivity_.intent(this).start();
+                Intent intent = new Intent(this, ParcialActivity.class);
+                startActivity(intent);
                 stopProgress();
             } else {
                 stopProgress(getString(R.string.nenhum_item_foi_lancado));

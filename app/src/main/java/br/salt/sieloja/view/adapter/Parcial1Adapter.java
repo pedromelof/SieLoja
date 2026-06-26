@@ -7,10 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
+
+
+
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,17 +17,16 @@ import java.util.List;
 import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.view.adapter.item.ParcialItem1;
-import br.salt.sieloja.view.adapter.item.ParcialItem1_;
 
-@EBean
+
 public class Parcial1Adapter extends BaseAdapter {
 
     List<Parcial> parcial;
 
-    @RootContext
+    
     Context context;
 
-    @Bean
+    
     ParcialController parcialController;
 
     @AfterInject
@@ -60,7 +58,7 @@ public class Parcial1Adapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ParcialItem1 parcialItem;
         if(convertView ==  null){
-            parcialItem = ParcialItem1_.build(context);
+            parcialItem = new ParcialItem1(context);
         }else{
             parcialItem = (ParcialItem1) convertView;
         }

@@ -5,29 +5,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 import java.sql.SQLException;
 import java.util.List;
 
 import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.view.adapter.item.ParcialItem;
-import br.salt.sieloja.view.adapter.item.ParcialItem_;
 
-@EBean
+
 public class ParcialAdapter extends BaseAdapter {
 
     List<Parcial> parcial;
     List<Parcial> parcialTaxa;
 
-    @RootContext
+    
     Context context;
 
-    @Bean
+    
     ParcialController parcialController;
 
     public void setListItemParcial(String numped) {
@@ -74,7 +68,7 @@ public class ParcialAdapter extends BaseAdapter {
 
         ParcialItem parcialItem;
         if(convertView ==  null){
-            parcialItem = ParcialItem_.build(context);
+            parcialItem = new ParcialItem(context);
         }else{
             parcialItem = (ParcialItem) convertView;
         }

@@ -7,11 +7,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
+
+
+
+
 
 import java.sql.SQLException;
 
@@ -27,31 +26,30 @@ import br.salt.sieloja.controller.UsuarioController;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
 
-@EViewGroup(R.layout.item_consumo_2)
 public class ConsumoItem2 extends LinearLayout {
 
-    @ViewById
+    
     TextView produto;
 
-    @ViewById
+    
     EditText qtd;
 
-    @ViewById
+    
     EditText valor;
 
-    @ViewById
+    
     TextView tvCodBarra;
 
-    @Bean
+    
     ItemController itemController;
 
-    @Bean
+    
     ConsumoController consumoController;
 
-    @Bean
+    
     CodBarraController codBarraController;
 
-    @Bean
+    
     UsuarioController usuarioController;
 
     private ItemConsumo itemConsumo;

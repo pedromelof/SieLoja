@@ -1,68 +1,57 @@
 package br.salt.sieloja.view;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.json.JSONException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Configuracoes;
-import br.salt.sieloja.rest.Request;
+import br.salt.sieloja.databinding.ActivityLoginBinding;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_login)
 public class LoginActivity extends BaseActivity {
-
-    @ViewById
-    Spinner editText_unidade;
-
-    @ViewById
-    EditText editText_usuario;
-
-    @ViewById
-    EditText editText_senha;
-
-    @ViewById
-    TextView text_ip;
-
-    @RestService
-    Request request;
-
     private String ip;
+    private ActivityLoginBinding binding;
 
-    @AfterViews
-    void afterView(){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
+
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        afterView();
+    }
+    
+    private void afterView(){
         try {
             ArrayList<String> unidade = empresaController.getListUnidade();
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, unidade);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            editText_unidade.setAdapter(adapter);
+            binding.editTextUnidade.setAdapter(adapter);
 
             if(usuarioController.isExisteUsuarioLogado()){
-                MenuActivity_.intent(this).start();
+                Intent intent = new Intent(this, MenuActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 Configuracoes configuracoes = configuracoesController.getConfiguracoes();
                 if(isConnectedInternet(this) && isConnectedWS(configuracoes.getIpWebService())) {
-                    bachgroundWS();
+                    backgroundWS();
                 }
                 this.ip = intToIp();
-                text_ip.setText(ip);
+                binding.textIp.setText(ip);
             }
+
+            binding.buttonEntrar.setOnClickListener(v -> button_entrar());
+
         } catch (SQLException e) {
             e.printStackTrace();
             Alert.dialog(this, getString(R.string.erro_no_sql));
@@ -72,29 +61,22 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @Background
-    public void bachgroundWS(){
-        try {
-            usuarioController.restUsuario();
-            empresaController.restEmprese();
-        } catch (SQLException e) {
-            stopProgress(getString(R.string.erro_no_sql) + e.getMessage());
-            e.printStackTrace();
-        } catch (JSONException e) {
-            stopProgress(getString(R.string.erro_no_json) + e.getMessage());
-            e.printStackTrace();
-        }  catch (Exception e) {
-            stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage());
-            e.printStackTrace();
-        }
+    private void backgroundWS() {
+        new Thread(() -> {
+            try {
+                usuarioController.restUsuario();
+                empresaController.restEmprese();
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage()));
+            }
+        }).start();
     }
 
-    @Click
     public void button_entrar(){
         try {
-            String usuario = editText_usuario.getText().toString();
-            String senha = editText_senha.getText().toString();
-            String unidade = empresaController.getCodUnidade(editText_unidade.getSelectedItem().toString());
+            String usuario = binding.editTextUsuario.getText().toString();
+            String senha = binding.editTextSenha.getText().toString();
+            String unidade = empresaController.getCodUnidade(binding.editTextUnidade.getSelectedItem().toString());
 
             if(usuario.equalsIgnoreCase("") || senha.equalsIgnoreCase("")){
                 Alert.dialog(this, getString(R.string.todos_os_campos_sao_de_preenchimento_obrigatorio));
@@ -102,7 +84,9 @@ public class LoginActivity extends BaseActivity {
                 if(usuarioController.login(usuario, senha)){
                     configuracoesController.setUnidade(unidade);
                     configuracoesController.setIP(ip);
-                    MenuActivity_.intent(this).start();
+                    Intent intent = new Intent(this, MenuActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Alert.dialog(this, getString(R.string.usuario_senha_incoretos));
                 }

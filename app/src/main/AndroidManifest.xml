@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SieLoja"
         tools:targetApi="m">
-        <activity android:name=".view.util.BaseActivity_" >
+        <activity android:name="br.salt.sieloja.view.util.BaseActivity" >
         </activity>
         <activity
-            android:name=".view.LoginActivity_"
+            android:name="br.salt.sieloja.view.LoginActivity"
             android:screenOrientation="fullSensor"
             android:noHistory="true"
             android:exported="true">
@@ -30,32 +30,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.CardapioActivity_"
+            android:name="br.salt.sieloja.view.CardapioActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_cardapio" >
         </activity>
         <activity
-            android:name=".view.ConsumoTextActivity_"
+            android:name="br.salt.sieloja.view.ConsumoTextActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_consumo" >
         </activity>
         <activity
-            android:name=".view.ConsumoNumberActivity_"
+            android:name="br.salt.sieloja.view.ConsumoNumberActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_consumo" >
         </activity>
         <activity
-            android:name=".view.ParcialActivity_"
+            android:name="br.salt.sieloja.view.ParcialActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_parcial" >
         </activity>
         <activity
-            android:name=".view.MenuActivity_"
+            android:name="br.salt.sieloja.view.MenuActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_menu" >
         </activity>
         <activity
-            android:name=".view.ConfiguracoesActivity_"
+            android:name="br.salt.sieloja.view.ConfiguracoesActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_configuracoes" >
         </activity>

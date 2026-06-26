@@ -5,9 +5,9 @@ import android.content.Context;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -23,16 +23,23 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoCliente;
 import br.salt.sieloja.rest.responseobject.RetornoCodBarra;
+import retrofit2.Call;
 
-@EBean
+
 public class CodBarraController extends DatabaseManager {
 
     @RestService
+
+    private static CodBarraController instance;
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
+    public static CodBarraController getInstance(Context context) {
+        if (instance == null) instance = new CodBarraController(context);
+        return instance;
+    }
     public CodBarraController(Context context) { super(context); }
 
     public List<CodBarra> getListCodBarra(String codItem) throws SQLException{
@@ -60,7 +67,8 @@ public class CodBarraController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoCodBarra retorno = request.requestCodBarra(envio);
+        Call<RetornoCodBarra> call = request.requestCodBarra(envio);
+        RetornoCodBarra retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<CodBarra, Integer> deleteBuilder = getHelper().getCodBarrasDao().deleteBuilder();
             deleteBuilder.delete();

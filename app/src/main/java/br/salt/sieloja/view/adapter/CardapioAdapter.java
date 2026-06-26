@@ -5,9 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
+
+
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,17 +16,16 @@ import java.util.List;
 import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.controller.ItemController;
 import br.salt.sieloja.view.adapter.item.CardapioItem;
-import br.salt.sieloja.view.adapter.item.CardapioItem_;
 
-@EBean
+
 public class CardapioAdapter extends BaseAdapter {
 
     List<Item> itens = new ArrayList<Item>();
 
-    @RootContext
+
     Context context;
 
-    @Bean
+    
     ItemController itemController;
 
     private String codigoIdioma;
@@ -71,7 +70,7 @@ public class CardapioAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         CardapioItem cardapioItem;
         if(convertView ==  null){
-            cardapioItem = CardapioItem_.build(context);
+            cardapioItem = new CardapioItem(context);
         }else{
             cardapioItem = (CardapioItem) convertView;
         }

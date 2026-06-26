@@ -2,23 +2,26 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
-
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-
 import java.sql.SQLException;
 import java.util.List;
 
 import br.salt.sieloja.bean.Configuracoes;
-import br.salt.sieloja.dao.DatabaseHelper;
 import br.salt.sieloja.dao.DatabaseManager;
 
-@EBean
+
 public class ConfiguracoesController extends DatabaseManager {
+
+    private static ConfiguracoesController instance;
 
     public ConfiguracoesController(Context context) {
         super(context);
+    }
+
+    public static synchronized ConfiguracoesController getInstance(Context context) {
+        if (instance == null) {
+            instance = new ConfiguracoesController(context.getApplicationContext());
+        }
+        return instance;
     }
 
     /**

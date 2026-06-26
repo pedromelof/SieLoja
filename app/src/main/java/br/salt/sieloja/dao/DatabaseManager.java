@@ -2,6 +2,8 @@ package br.salt.sieloja.dao;
 
 import android.content.Context;
 
+import br.salt.sieloja.controller.ClienteController;
+
 public class DatabaseManager {
 
     private static DatabaseManager instance;
@@ -15,7 +17,10 @@ public class DatabaseManager {
         if(instance==null) instance = new DatabaseManager(context);
     }
 
-    public static DatabaseManager getInstance() {
+    public static DatabaseManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new ClienteController(context.getApplicationContext());
+        }
         return instance;
     }
 

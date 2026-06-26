@@ -5,9 +5,9 @@ import android.content.Context;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -23,17 +23,25 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoFormaPagamento;
 import br.salt.sieloja.rest.responseobject.RetornoIdioma;
+import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 import br.salt.sieloja.rest.responseobject.RetornoTipoPag;
+import retrofit2.Call;
 
-@EBean
+
 public class TabelaController extends DatabaseManager {
 
     @RestService
+
+    private static TabelaController instance;
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
+    public static TabelaController getInstance(Context context) {
+        if (instance == null) instance = new TabelaController(context);
+        return instance;
+    }
     public TabelaController(Context context) {
         super(context);
     }
@@ -138,7 +146,8 @@ public class TabelaController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoFormaPagamento retorno = request.requestFormaPag(envio);
+        Call<RetornoFormaPagamento> call = request.requestFormaPag(envio);
+        RetornoFormaPagamento retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<FormaPagamento, Integer> deleteBuilder = getHelper().getFormaPagDao().deleteBuilder();
             deleteBuilder.delete();
@@ -154,7 +163,8 @@ public class TabelaController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoTipoPag retorno = request.requestTipoPag(envio);
+        Call<RetornoTipoPag> call = request.requestTipoPag(envio);
+        RetornoTipoPag retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<TipoPagamento, Integer> deleteBuilder = getHelper().getTipoPagDao().deleteBuilder();
             deleteBuilder.delete();

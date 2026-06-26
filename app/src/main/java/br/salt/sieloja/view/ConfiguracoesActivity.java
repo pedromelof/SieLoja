@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -12,11 +13,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
+
+
+
+
+
 
 import java.sql.SQLException;
 
@@ -26,67 +27,73 @@ import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
 @SuppressLint("NonConstantResourceId")
-@WindowFeature({ Window.FEATURE_NO_TITLE })
-@EActivity(R.layout.activity_configuracoes)
 public class ConfiguracoesActivity extends BaseActivity {
 
-    @ViewById
+    
     EditText editTextNumeroEquipamento;
 
-    @ViewById
+    
     EditText editTextUnidade;
 
-    @ViewById
+    
     EditText editTextIpWebService;
 
-    @ViewById
+    
     EditText editTextIpBancoDeDados;
 
-    @ViewById
+    
     EditText editTextNomeBancoDeDados;
 
-    @ViewById
+    
     EditText editTextSeguranca;
 
-    @ViewById
+    
     TextView textViewVercaoApp;
 
-    @ViewById
+    
     TextView textVercaoWebService;
 
-    @ViewById
+    
     TextView textViewVercaoAndroid;
 
-    @ViewById
+    
     TextView textViewRedeWifi;
 
-    @ViewById
+    
     TextView textVercaoApp;
 
-    @ViewById
+    
     TextView textVercaoAndroid;
 
-    @ViewById
+    
     TextView textNumeroDoModelo;
 
-    @ViewById
+    
     TextView textWifi;
 
-    @ViewById
+    
     TextView textVelocidade;
 
-    @ViewById
+    
     TextView textIP;
 
-    @ViewById
+    
     Spinner spinnerTypeKey;
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    @ViewById
+    
     Switch switchAlterarData;
 
     private Configuracoes configuracoes;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_configuracoes);
+    }
     @SuppressLint("SetTextI18n")
     @AfterViews
     public void afterView(){

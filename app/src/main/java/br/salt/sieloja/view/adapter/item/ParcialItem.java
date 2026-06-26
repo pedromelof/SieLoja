@@ -4,10 +4,6 @@ import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import java.text.DecimalFormat;
 
 import br.salt.sieloja.R;
@@ -15,22 +11,16 @@ import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.controller.ItemController;
 import br.salt.sieloja.view.util.Alert;
 
-@EViewGroup(R.layout.item_parcial)
 public class ParcialItem extends LinearLayout {
 
-    @ViewById
     TextView textItem;
 
-    @ViewById
     TextView textQuantidade;
 
-    @ViewById
     TextView textValorTotal;
 
-    @ViewById
     TextView textUnidade;
 
-    @Bean
     ItemController itemController;
 
     public ParcialItem(Context context) {
