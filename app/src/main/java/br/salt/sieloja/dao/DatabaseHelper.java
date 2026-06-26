@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -26,9 +26,8 @@ import br.salt.sieloja.bean.Subgrupo;
 import br.salt.sieloja.bean.TipoPagamento;
 import br.salt.sieloja.bean.Usuario;
 import br.salt.sieloja.controller.ConfiguracoesController;
-import br.salt.sieloja.controller.ConfiguracoesController_;
 import br.salt.sieloja.controller.UsuarioController;
-import br.salt.sieloja.controller.UsuarioController_;
+import com.j256.ormlite.dao.Dao;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -155,11 +154,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         /*Configuracoes configuracoes = new Configuracoes("01", "00001", "01", "01",
                 "http:/saltinfo.no-ip.com:7782/Des_SieWS/", "192.168.1.2:5432", "p_sie_jeri_filial", "p_seg_jeriarte",
                 "0.0.0.0", 2, Configuracoes.TYPE_KEY_NUMBER, true);*/
-        ConfiguracoesController controller = ConfiguracoesController_.getInstance_(context);
+        ConfiguracoesController controller = ConfiguracoesController.getInstance(context);
         getConfiguracoesDao().createOrUpdate(configuracoes);
 
         Usuario usuario = new Usuario("00000", "SALT", "196", "01960", false, "99");
-        UsuarioController usuarioController = UsuarioController_.getInstance_(context);
+        UsuarioController usuarioController = UsuarioController.getInstance(context);
         getUsuarioDao().createOrUpdate(usuario);
     }
 

@@ -5,10 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,21 +13,18 @@ import br.salt.sieloja.bean.Consumo;
 import br.salt.sieloja.bean.ItemConsumo;
 import br.salt.sieloja.controller.ConsumoController;
 import br.salt.sieloja.view.adapter.item.ConsumoItem1;
-import br.salt.sieloja.view.adapter.item.ConsumoItem1_;
 import br.salt.sieloja.view.adapter.item.ConsumoItem2;
-import br.salt.sieloja.view.adapter.item.ConsumoItem2_;
 import br.salt.sieloja.view.util.ConsumoActivity;
 
-@EBean
 public class ConsumoAdapter extends BaseAdapter {
 
     private List<ItemConsumo> itensConsumo;
     private ConsumoActivity consumoActivity;
 
-    @RootContext
+    
     Context context;
 
-    @Bean
+    
     ConsumoController consumoController;
 
     public void refresh(Consumo consumo, ConsumoActivity consumoActivity) throws SQLException {
@@ -78,7 +71,7 @@ public class ConsumoAdapter extends BaseAdapter {
         if(position % 2 == 0){
             ConsumoItem1 consumoItem;
             if(convertView ==  null){
-                consumoItem = ConsumoItem1_.build(context);
+                consumoItem = new ConsumoItem1(context);
             }else{
                 consumoItem = (ConsumoItem1) convertView;
             }
@@ -87,7 +80,7 @@ public class ConsumoAdapter extends BaseAdapter {
         } else {
             ConsumoItem2 consumoItem;
             if(convertView ==  null){
-                consumoItem = ConsumoItem2_.build(context);
+                consumoItem = new ConsumoItem2(context);
             }else{
                 consumoItem = (ConsumoItem2) convertView;
             }

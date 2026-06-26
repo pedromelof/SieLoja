@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -12,12 +13,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
+
+
+
+
+
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,16 +31,16 @@ import br.salt.sieloja.view.util.BaseActivity;
 
 public class CardapioActivity extends BaseActivity {
 
-    @ViewById
+    
     ListView list_view_pesquisa;
 
-    @ViewById
+    
     AutoCompleteTextView autocomplete_pesquisa;
 
-    @ViewById
+    
     ImageButton button_filtro_idioma;
 
-    @Bean
+    
     CardapioAdapter adapterList;
 
     private Context context;

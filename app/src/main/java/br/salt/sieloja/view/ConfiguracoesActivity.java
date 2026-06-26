@@ -13,11 +13,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
+
+
+
+
+
 
 import java.sql.SQLException;
 
@@ -29,59 +29,59 @@ import br.salt.sieloja.view.util.BaseActivity;
 @SuppressLint("NonConstantResourceId")
 public class ConfiguracoesActivity extends BaseActivity {
 
-    @ViewById
+    
     EditText editTextNumeroEquipamento;
 
-    @ViewById
+    
     EditText editTextUnidade;
 
-    @ViewById
+    
     EditText editTextIpWebService;
 
-    @ViewById
+    
     EditText editTextIpBancoDeDados;
 
-    @ViewById
+    
     EditText editTextNomeBancoDeDados;
 
-    @ViewById
+    
     EditText editTextSeguranca;
 
-    @ViewById
+    
     TextView textViewVercaoApp;
 
-    @ViewById
+    
     TextView textVercaoWebService;
 
-    @ViewById
+    
     TextView textViewVercaoAndroid;
 
-    @ViewById
+    
     TextView textViewRedeWifi;
 
-    @ViewById
+    
     TextView textVercaoApp;
 
-    @ViewById
+    
     TextView textVercaoAndroid;
 
-    @ViewById
+    
     TextView textNumeroDoModelo;
 
-    @ViewById
+    
     TextView textWifi;
 
-    @ViewById
+    
     TextView textVelocidade;
 
-    @ViewById
+    
     TextView textIP;
 
-    @ViewById
+    
     Spinner spinnerTypeKey;
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    @ViewById
+    
     Switch switchAlterarData;
 
     private Configuracoes configuracoes;

@@ -2,14 +2,14 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -17,19 +17,20 @@ import java.util.List;
 
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Idioma;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoIdioma;
+import retrofit2.Call;
 
-@EBean
+
 public class IdiomaController extends DatabaseManager {
 
     
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
     public static IdiomaController getInstance(Context context) {
@@ -89,7 +90,8 @@ public class IdiomaController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoIdioma retorno = request.requestIdioma(envio);
+        Call<RetornoIdioma> call = request.requestIdioma(envio);
+        RetornoIdioma retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<Idioma, Integer> deleteBuilder = getHelper().getIdiomaDao().deleteBuilder();
             deleteBuilder.delete();

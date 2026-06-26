@@ -2,6 +2,8 @@ package br.salt.sieloja.view;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 
 
 
@@ -51,37 +52,37 @@ import br.salt.sieloja.view.util.ConsumoActivity;
 
 public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity {
 
-    @ViewById
+    
     AutoCompleteTextView btn_item;
 
-    @ViewById
+    
     Button btn_data;
 
-    @ViewById
+    
     Button btn_total;
 
-    @ViewById
+    
     EditText btn_qtd;
 
-    @ViewById
+    
     EditText btn_valor;
 
-    @ViewById
+    
     ListView listView;
 
-    @ViewById
+    
     Spinner spinnerCliente;
 
-    @ViewById
+    
     Spinner spinnerTipoP;
 
-    @ViewById
+    
     Spinner spinnerFormaP;
 
-    @Bean
+    
     ConsumoAdapter adapter;
 
-    @RestService
+    
     Request request;
 
     private List<CodBarra> codBarra;
@@ -299,7 +300,9 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         try {
             if(consumoController.getAllItemConsumo().size() > 0){
                 parcialController.transformarConsumoEmParcial();
-                ParcialActivity_.intent(this).start();
+                Intent intent = new Intent(this, ParcialActivity.class);
+                intent.putExtra("data", calendar.getTime());
+                startActivity(intent);
                 stopProgress();
             } else {
                 stopProgress(getString(R.string.nenhum_item_foi_lancado));

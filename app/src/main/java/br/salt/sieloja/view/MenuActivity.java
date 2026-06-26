@@ -3,16 +3,17 @@ package br.salt.sieloja.view;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
 
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.WindowFeature;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -24,9 +25,15 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
+@WindowFeature({ Window.FEATURE_NO_TITLE })
 public class MenuActivity extends BaseActivity {
 
     @RestService
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+    }
     
     Request request;
 
@@ -64,10 +71,12 @@ public class MenuActivity extends BaseActivity {
         try {
             Configuracoes configuracoes = configuracoesController.getConfiguracoes();
             if(configuracoes.getTypeKey().equalsIgnoreCase(Configuracoes.TYPE_KEY_NUMBER)){
-                ConsumoNumberActivity_.intent(this).start();
+                Intent intent = new Intent(this, ConsumoNumberActivity.class);
+                startActivity(intent);
 
             } else {
-                ConsumoTextActivity_.intent(this).start();
+                Intent intent = new Intent(this, ConsumoTextActivity.class);
+                startActivity(intent);
             }
         } catch (SQLException e) {
             Alert.dialog(this, getString(R.string.erro_no_sql) + e.getMessage());
@@ -84,11 +93,14 @@ public class MenuActivity extends BaseActivity {
 
     @Click
     public void button_cardapio(){
-        CardapioActivity_.intent(this).start();
+        Intent intent = new Intent(this, CardapioActivity.class);
+        startActivity(intent);
     }
 
     @Click
-    public void button_configuracoes(){ ConfiguracoesActivity_.intent(this).start(); }
+    public void button_configuracoes(){
+        Intent intent = new Intent(this, ConfiguracoesActivity.class);
+        startActivity(intent); }
 
     @Click
     public void button_sincronizar(){
@@ -153,7 +165,8 @@ public class MenuActivity extends BaseActivity {
             calendar.set(year, month, day);
             parcialController.restParcial(calendar.getTime());
             if(parcialController.isVerificaSeExisteParcial()){
-                ParcialActivity_.intent(this).data(calendar.getTime()).start();
+                Intent intent = new Intent(this, ParcialActivity.class);
+                startActivity(intent);
                 stopProgress();
             } else {
                 stopProgress(getString(R.string.nenhuma_venda_foi_encontrado));
@@ -186,9 +199,9 @@ public class MenuActivity extends BaseActivity {
         try {
             consumoController.deletarAll();
             usuarioController.logout();
-            LoginActivity_.intent(this)
-                    .flags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .start();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         } catch (SQLException e) {
             e.printStackTrace();
             Alert.dialog(this, getString(R.string.erro_no_sql));

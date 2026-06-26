@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 
 
-
 import java.text.DecimalFormat;
 
 import br.salt.sieloja.R;
@@ -21,31 +20,30 @@ import br.salt.sieloja.view.adapter.Parcial1Adapter;
 import br.salt.sieloja.view.adapter.ParcialAdapter;
 import br.salt.sieloja.view.util.Alert;
 
-@EViewGroup(R.layout.item_parcial1)
 public class ParcialItem1 extends LinearLayout {
 
-    @ViewById
+    
     TextView textPedido;
 
-    @ViewById
+    
     TextView textStatus;
 
-    @ViewById
+    
     TextView textCliente;
 
-    @ViewById
+    
     TextView textBruto;
 
-    @ViewById
+    
     TextView textLiquido;
 
-    @ViewById
+    
     TextView textTaxa;
 
-    @ViewById
+    
     ListView listView;
 
-    @Bean
+    
     ParcialAdapter adapter;
 
     public ParcialItem1(Context context) { super(context); }

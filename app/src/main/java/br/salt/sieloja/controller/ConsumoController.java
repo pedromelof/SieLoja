@@ -1,15 +1,9 @@
 package br.salt.sieloja.controller;
 
 import android.content.Context;
-
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -22,15 +16,16 @@ import br.salt.sieloja.bean.Consumo;
 import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.bean.ItemConsumo;
 import br.salt.sieloja.bean.Usuario;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.EnvioConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioItemConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioItemConsumoIns;
 import br.salt.sieloja.rest.responseobject.Retorno;
+import retrofit2.Call;
 
-@EBean
+
 public class ConsumoController extends DatabaseManager {
 
     @RestService
@@ -38,10 +33,10 @@ public class ConsumoController extends DatabaseManager {
     private static ConsumoController instance;
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
-    @Bean
+    
     ItemController itemController;
 
     public static synchronized ConsumoController getInstance(Context context) {
@@ -194,7 +189,8 @@ public class ConsumoController extends DatabaseManager {
         envio.setIp(configuracoes.getIp());
         envio.setDate(date);
         request.setRootUrl(configuracoes.getIpWebService());
-        Retorno retorno = request.requestVenda(envio);
+        Call<Retorno> call = request.requestVenda(envio);
+        Retorno retorno = call.execute().body();
         if(!retorno.isOperacaoFinalizada())
             throw new Exception(retorno.getMensagem());
     }

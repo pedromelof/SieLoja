@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 
 
-
 import java.sql.SQLException;
 
 import br.salt.sieloja.R;
@@ -27,31 +26,30 @@ import br.salt.sieloja.controller.UsuarioController;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
 
-@EViewGroup(R.layout.item_consumo_2)
 public class ConsumoItem2 extends LinearLayout {
 
-    @ViewById
+    
     TextView produto;
 
-    @ViewById
+    
     EditText qtd;
 
-    @ViewById
+    
     EditText valor;
 
-    @ViewById
+    
     TextView tvCodBarra;
 
-    @Bean
+    
     ItemController itemController;
 
-    @Bean
+    
     ConsumoController consumoController;
 
-    @Bean
+    
     CodBarraController codBarraController;
 
-    @Bean
+    
     UsuarioController usuarioController;
 
     private ItemConsumo itemConsumo;

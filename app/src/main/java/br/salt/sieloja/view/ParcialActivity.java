@@ -1,6 +1,7 @@
 package br.salt.sieloja.view;
 
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,14 @@ import com.cete.dynamicpdf.WebColor;
 import com.cete.dynamicpdf.pageelements.Label;
 import com.cete.dynamicpdf.pageelements.Rectangle;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.WindowFeature;
+
+
+
+
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -46,27 +47,29 @@ import br.salt.sieloja.view.adapter.ParcialAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
+@WindowFeature({ Window.FEATURE_NO_TITLE })
+@EActivity(R.layout.activity_parcial)
 public class ParcialActivity extends BaseActivity {
 
     @Extra
     Date data;
 
-    @ViewById
+    
     TextView textValorBruto;
 
-    @ViewById
+    
     TextView textValorTaxa;
 
-    @ViewById
+    
     TextView textValorLiquido;
 
-    @ViewById
+    
     TextView textValorTotalItens;
 
-    @ViewById
+    
     ListView listView;
 
-    @Bean
+    
     Parcial1Adapter adapter;
 
     private Template template;

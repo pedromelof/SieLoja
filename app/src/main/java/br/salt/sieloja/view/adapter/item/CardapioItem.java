@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 
 
-
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
@@ -17,16 +16,15 @@ import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.controller.IdiomaController;
 import br.salt.sieloja.view.util.Alert;
 
-@EViewGroup(R.layout.item_cardapio)
 public class CardapioItem extends LinearLayout {
 
-    @ViewById
+    
     TextView text_nome;
 
-    @ViewById
+    
     TextView text_preco;
 
-    @Bean
+    
     IdiomaController idiomaController;
 
     public CardapioItem(Context context) {

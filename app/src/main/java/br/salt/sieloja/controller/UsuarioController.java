@@ -2,14 +2,10 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -17,23 +13,32 @@ import java.util.List;
 
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Usuario;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoUsuario;
+import retrofit2.Call;
 
-@EBean
+
 public class UsuarioController extends DatabaseManager {
 
-    @RestService
+    
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
+    private static UsuarioController instance;
     public UsuarioController(Context context) {
         super(context);
+    }
+
+    public static synchronized UsuarioController getInstance(Context context) {
+        if (instance == null) {
+            instance = new UsuarioController(context.getApplicationContext());
+        }
+        return instance;
     }
 
     /**
@@ -120,7 +125,8 @@ public class UsuarioController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeSeguranca());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoUsuario retorno = request.requestUsuario(envio);
+        Call<RetornoUsuario> call = request.requestUsuario(envio);
+        RetornoUsuario retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<Usuario, Integer> deleteBuilder = getHelper().getUsuarioDao().deleteBuilder();
             deleteBuilder.delete();

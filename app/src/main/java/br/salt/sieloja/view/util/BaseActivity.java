@@ -35,7 +35,6 @@ import br.salt.sieloja.controller.SubgrupoController;
 import br.salt.sieloja.controller.TabelaController;
 import br.salt.sieloja.controller.UsuarioController;
 
-@EActivity
 public class BaseActivity extends FragmentActivity {
 
     protected ImageView imageLogo;
@@ -43,40 +42,40 @@ public class BaseActivity extends FragmentActivity {
 
     protected ProgressDialog progressDialog;
 
-    @Bean
+    
     protected ClienteController clienteController;
 
-    @Bean
+    
     protected ConfiguracoesController configuracoesController;
 
-    @Bean
+    
     protected ConsumoController consumoController;
 
-    @Bean
+    
     protected EmpresaController empresaController;
 
-    @Bean
+    
     protected GrupoController grupoController;
 
-    @Bean
+    
     protected IdiomaController idiomaController;
 
-    @Bean
+    
     protected ItemController itemController;
 
-    @Bean
+    
     protected ParcialController parcialController;
 
-    @Bean
+    
     protected SubgrupoController subgrupoController;
 
-    @Bean
+    
     protected TabelaController tabelaController;
 
-    @Bean
+    
     protected UsuarioController usuarioController;
 
-    @Bean
+    
     protected CodBarraController codBarraController;
 
     @Override

@@ -2,14 +2,14 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -24,7 +24,7 @@ import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.bean.ItemConsumo;
 import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.bean.Usuario;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.EnvioConsumo;
@@ -32,8 +32,10 @@ import br.salt.sieloja.rest.responseobject.EnvioItemConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioParcial;
 import br.salt.sieloja.rest.responseobject.Retorno;
 import br.salt.sieloja.rest.responseobject.RetornoParcial;
+import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
+import retrofit2.Call;
 
-@EBean
+
 public class ParcialController extends DatabaseManager {
 
     @RestService
@@ -41,16 +43,16 @@ public class ParcialController extends DatabaseManager {
     
     Request request;
 
-    @Bean
+    
     ItemController itemController;
 
-    @Bean
+    
     ConsumoController consumoController;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
-    @Bean
+    
     UsuarioController usuarioController;
 
     public static ParcialController getInstance(Context context) {
@@ -199,7 +201,8 @@ public class ParcialController extends DatabaseManager {
         envio.setUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
         envio.setCartao(usuario.getCodigo());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoParcial retorno = request.requestParcial(envio);
+        Call<RetornoParcial> call = request.requestParcial(envio);
+        RetornoParcial retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<Parcial, Integer> deleteBuilder = getHelper().getParcialDao().deleteBuilder();
             deleteBuilder.delete();
@@ -243,7 +246,8 @@ public class ParcialController extends DatabaseManager {
         envio.setIp(configuracoes.getIp());
         envio.setDate(date);
         request.setRootUrl(configuracoes.getIpWebService());
-        Retorno retorno = request.requestImprimirParcial(envio);
+        Call<Retorno> call = request.requestImprimirParcial(envio);
+        Retorno retorno = call.execute().body();
         if(!retorno.isOperacaoFinalizada())
             throw new Exception(retorno.getMensagem());
     }

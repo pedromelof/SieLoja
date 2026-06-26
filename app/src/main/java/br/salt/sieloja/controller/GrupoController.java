@@ -2,14 +2,14 @@ package br.salt.sieloja.controller;
 
 import android.content.Context;
 
-import com.j256.ormlite.dao.Dao;
+
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.ormlite.annotations.OrmLiteDao;
-import org.androidannotations.rest.spring.annotations.RestService;
+
+
+
+
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -18,13 +18,14 @@ import java.util.List;
 
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Grupo;
-import br.salt.sieloja.dao.DatabaseHelper;
+
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoGrupo;
+import retrofit2.Call;
 
-@EBean
+
 public class GrupoController extends DatabaseManager {
 
     @RestService
@@ -32,7 +33,7 @@ public class GrupoController extends DatabaseManager {
     
     Request request;
 
-    @Bean
+    
     ConfiguracoesController configuracoesController;
 
     public static GrupoController getInstance(Context context) {
@@ -120,7 +121,8 @@ public class GrupoController extends DatabaseManager {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         request.setRootUrl(configuracoes.getIpWebService());
-        RetornoGrupo retorno = request.requestGrupo(envio);
+        Call<RetornoGrupo> call = request.requestGrupo(envio);
+        RetornoGrupo retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
             DeleteBuilder<Grupo, Integer> deleteBuilder = getHelper().getGrupoDao().deleteBuilder();
             deleteBuilder.delete();
