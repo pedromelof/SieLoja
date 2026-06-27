@@ -24,6 +24,7 @@ import br.salt.sieloja.bean.Usuario;
 
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
+import br.salt.sieloja.rest.RequestClient;
 import br.salt.sieloja.rest.responseobject.EnvioConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioItemConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioParcial;
@@ -38,8 +39,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ParcialController extends DatabaseManager {
 
     private static ParcialController instance;
-
-    Request request;
 
 
     ItemController itemController;
@@ -60,7 +59,6 @@ public class ParcialController extends DatabaseManager {
             instance.consumoController = ConsumoController.getInstance(context.getApplicationContext());
             instance.itemController = ItemController.getInstance(context.getApplicationContext());
 
-            instance.request = new Retrofit.Builder().baseUrl("http://192.168.3.6:7781/SieWS/").addConverterFactory(GsonConverterFactory.create()).build().create(Request.class);
         }
         return instance;
     }
@@ -204,7 +202,7 @@ public class ParcialController extends DatabaseManager {
         envio.setNomeBanco(configuracoes.getNomeBancoDeDados());
         envio.setUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
         envio.setCartao(usuario.getCodigo());
-
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<RetornoParcial> call = request.requestParcial(envio);
         RetornoParcial retorno = call.execute().body();
         if (retorno.isOperacaoFinalizada()) {
@@ -247,7 +245,7 @@ public class ParcialController extends DatabaseManager {
         envio.setOrigem("IMPPV");
         envio.setIp(configuracoes.getIp());
         envio.setDate(date);
-
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<Retorno> call = request.requestImprimirParcial(envio);
         Retorno retorno = call.execute().body();
         if (!retorno.isOperacaoFinalizada()) throw new Exception(retorno.getMensagem());

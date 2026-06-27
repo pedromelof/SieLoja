@@ -20,6 +20,7 @@ import br.salt.sieloja.bean.Grupo;
 import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
+import br.salt.sieloja.rest.RequestClient;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoCliente;
 import br.salt.sieloja.rest.responseobject.RetornoCodBarra;
@@ -31,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CodBarraController extends DatabaseManager {
 
     private static CodBarraController instance;
-    Request request;
+    
 
     
     ConfiguracoesController configuracoesController;
@@ -40,12 +41,6 @@ public class CodBarraController extends DatabaseManager {
         if (instance == null) {
             instance = new CodBarraController(context.getApplicationContext());
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
-
-            instance.request = new Retrofit.Builder()
-                    .baseUrl("http://192.168.3.6:7781/SieWS/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(Request.class);
         }
         return instance;
     }
@@ -75,7 +70,7 @@ public class CodBarraController extends DatabaseManager {
     public void restCodBarra() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<RetornoCodBarra> call = request.requestCodBarra(envio);
         RetornoCodBarra retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){

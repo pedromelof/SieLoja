@@ -23,7 +23,7 @@ import br.salt.sieloja.view.util.BaseActivity;
 
 public class MenuActivity extends BaseActivity {
 
-    Request request;
+    
 
     private DatePicker datePicker;
 

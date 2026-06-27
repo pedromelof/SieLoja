@@ -17,6 +17,7 @@ import br.salt.sieloja.bean.Grupo;
 import br.salt.sieloja.bean.TipoPagamento;
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
+import br.salt.sieloja.rest.RequestClient;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoCliente;
 import br.salt.sieloja.rest.responseobject.RetornoFormaPagamento;
@@ -29,7 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ClienteController extends DatabaseManager {
 
     private static ClienteController instance;
-    Request request;
+    
 
     
     ConfiguracoesController configuracoesController;
@@ -38,12 +39,6 @@ public class ClienteController extends DatabaseManager {
             if (instance == null) {
                 instance = new ClienteController(context.getApplicationContext());
                 instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
-
-                instance.request = new Retrofit.Builder()
-                        .baseUrl("http://192.168.3.6:7781/SieWS/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(Request.class);
             }
             return instance;
     }
@@ -102,6 +97,7 @@ public class ClienteController extends DatabaseManager {
 
     public void restCliente() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
         Call<RetornoCliente> call = request.requestCliente(envio);
         RetornoCliente retorno = call.execute().body();

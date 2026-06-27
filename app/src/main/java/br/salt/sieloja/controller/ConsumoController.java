@@ -19,6 +19,7 @@ import br.salt.sieloja.bean.Usuario;
 
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
+import br.salt.sieloja.rest.RequestClient;
 import br.salt.sieloja.rest.responseobject.EnvioConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioItemConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioItemConsumoIns;
@@ -32,7 +33,7 @@ public class ConsumoController extends DatabaseManager {
 
 
     private static ConsumoController instance;
-    Request request;
+    
 
     
     ConfiguracoesController configuracoesController;
@@ -45,12 +46,6 @@ public class ConsumoController extends DatabaseManager {
             instance = new ConsumoController(context.getApplicationContext());
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
             instance.itemController = ItemController.getInstance(context.getApplicationContext());
-
-            instance.request = new Retrofit.Builder()
-                    .baseUrl("http://192.168.3.6:7781/SieWS/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(Request.class);
         }
         return instance;
     }
@@ -198,6 +193,7 @@ public class ConsumoController extends DatabaseManager {
         envio.setIp(configuracoes.getIp());
         envio.setDate(date);
         
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<Retorno> call = request.requestVenda(envio);
         Retorno retorno = call.execute().body();
         if(!retorno.isOperacaoFinalizada())

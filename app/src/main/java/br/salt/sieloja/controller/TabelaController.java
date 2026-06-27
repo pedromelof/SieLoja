@@ -15,6 +15,7 @@ import br.salt.sieloja.bean.FormaPagamento;
 import br.salt.sieloja.bean.TipoPagamento;
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
+import br.salt.sieloja.rest.RequestClient;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoFormaPagamento;
 import br.salt.sieloja.rest.responseobject.RetornoTipoPag;
@@ -26,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class TabelaController extends DatabaseManager {
 
     private static TabelaController instance;
-    Request request;
+    
     ConfiguracoesController configuracoesController;
 
     public static synchronized TabelaController getInstance(Context context) {
@@ -34,11 +35,6 @@ public class TabelaController extends DatabaseManager {
             instance = new TabelaController(context.getApplicationContext());
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
 
-            instance.request = new Retrofit.Builder()
-                    .baseUrl("http://192.168.3.6:7781/SieWS/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(Request.class);
         }
         return instance;
     }
@@ -146,7 +142,7 @@ public class TabelaController extends DatabaseManager {
     public void restFormaPag() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<RetornoFormaPagamento> call = request.requestFormaPag(envio);
         RetornoFormaPagamento retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
@@ -163,7 +159,7 @@ public class TabelaController extends DatabaseManager {
     public void restTipoPag() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<RetornoTipoPag> call = request.requestTipoPag(envio);
         RetornoTipoPag retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
