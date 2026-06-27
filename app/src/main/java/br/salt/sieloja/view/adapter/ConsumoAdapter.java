@@ -27,6 +27,11 @@ public class ConsumoAdapter extends BaseAdapter {
     
     ConsumoController consumoController;
 
+    public ConsumoAdapter(Context context, ConsumoController consumoController) {
+        this.context = context;
+        this.consumoController = consumoController;
+    }
+
     public void refresh(Consumo consumo, ConsumoActivity consumoActivity) throws SQLException {
         this.consumoActivity = consumoActivity;
         itensConsumo = consumoController.getAllItemConsumo();

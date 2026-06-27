@@ -35,7 +35,7 @@ public class TabelaController extends DatabaseManager {
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
 
             instance.request = new Retrofit.Builder()
-                    .baseUrl("http://default.url")
+                    .baseUrl("http://192.168.3.6:7781/SieWS/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                     .create(Request.class);
@@ -146,7 +146,7 @@ public class TabelaController extends DatabaseManager {
     public void restFormaPag() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        request.setRootUrl(configuracoes.getIpWebService());
+        
         Call<RetornoFormaPagamento> call = request.requestFormaPag(envio);
         RetornoFormaPagamento retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){
@@ -163,7 +163,7 @@ public class TabelaController extends DatabaseManager {
     public void restTipoPag() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        request.setRootUrl(configuracoes.getIpWebService());
+        
         Call<RetornoTipoPag> call = request.requestTipoPag(envio);
         RetornoTipoPag retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){

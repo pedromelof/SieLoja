@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.controller.ItemController;
+import br.salt.sieloja.view.adapter.ParcialAdapter;
 import br.salt.sieloja.view.util.Alert;
 
 public class ParcialItem extends LinearLayout {
@@ -25,6 +26,12 @@ public class ParcialItem extends LinearLayout {
 
     public ParcialItem(Context context) {
         super(context);
+
+        inflate(context, R.layout.item_parcial, this);
+        textItem = findViewById(R.id.textItem);
+        textQuantidade = findViewById(R.id.textQuantidade);
+        textValorTotal = findViewById(R.id.textValorTotal);
+        textUnidade = findViewById(R.id.textUnidade);
     }
 
     public void bind(Parcial parcial){

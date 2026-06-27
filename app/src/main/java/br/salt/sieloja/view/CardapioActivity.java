@@ -46,6 +46,7 @@ public class CardapioActivity extends BaseActivity {
         context = this;
         cod_idioma = "pt_br";
         selectedItens = new ArrayList<String>();
+        adapterList = new CardapioAdapter(this, itemController);
 
         try {
             String[] itens = itemController.getAllItem();

@@ -1,5 +1,7 @@
 package br.salt.sieloja.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import com.cete.dynamicpdf.Document;
 import com.cete.dynamicpdf.Font;
@@ -24,6 +27,7 @@ import com.cete.dynamicpdf.pageelements.Rectangle;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -34,6 +38,7 @@ import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.databinding.ActivityParcialBinding;
+import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.adapter.Parcial1Adapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
@@ -60,6 +65,7 @@ public class ParcialActivity extends BaseActivity {
 
     public void afterView(){
         try {
+            adapter = new Parcial1Adapter(this);
             binding.listView.setAdapter(adapter);
 
             DecimalFormat form  = new DecimalFormat("###,##0.00");
@@ -160,10 +166,20 @@ public class ParcialActivity extends BaseActivity {
                 Document objDocument = new Document();
                 objDocument.setTemplate(template);
                 Page objPage = new Page(PageSize.LETTER, PageOrientation.PORTRAIT, 54.0f);
-                String file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                        + "/SIE EasyBox/RelVenda - " + sd1.format(this.data) + ".pdf";
+
+                File baseDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+                File appDir = new File(baseDir, "SIE EasyBox");
+
+                if (!appDir.exists()) {
+                    if (!appDir.mkdirs()) {
+                        throw new Exception("Falha ao criar pasta: " + appDir.getAbsolutePath());
+                    }
+                }
+
+                String file = new File(appDir, "RelVenda - " + sd1.format(this.data) + ".pdf").getAbsolutePath();
 
                 for (Parcial parcial : parcialController.getForAll()) {
+                    if (parcial.getCodItem().equals("TX. ADM")) continue;
                     Label codigo = new Label(parcial.getCodItem(), 2, currentY, 60, 11,Font.getTimesRoman(), 11);
                     Label item = new Label(parcial.getDecItem(), 70, currentY, 320, 11,Font.getTimesRoman(), 11);
                     Label qtd = new Label(parcial.getQtdTxt(), 380, currentY, 50, 11,Font.getTimesRoman(), 11, TextAlign.RIGHT);
@@ -197,6 +213,7 @@ public class ParcialActivity extends BaseActivity {
 
                 objDocument.getPages().add(objPage);
                 objDocument.draw(file);
+
                 runOnUiThread(() -> stopProgress(getString(R.string.salvo_com_sucesso)));
             } catch (SQLException e) {
                 e.printStackTrace();

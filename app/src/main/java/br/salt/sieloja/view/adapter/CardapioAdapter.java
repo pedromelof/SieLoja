@@ -30,6 +30,10 @@ public class CardapioAdapter extends BaseAdapter {
 
     private String codigoIdioma;
 
+    public CardapioAdapter(Context context, ItemController itemController) {
+        this.context = context;
+        this.itemController = itemController;
+    }
     public void refresh(List<String> grupos, String codigoIdioma) throws SQLException {
         this.codigoIdioma = codigoIdioma;
         itens.clear();

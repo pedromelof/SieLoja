@@ -13,22 +13,28 @@ import java.text.DecimalFormat;
 import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Idioma;
 import br.salt.sieloja.bean.Item;
+import br.salt.sieloja.controller.GrupoController;
 import br.salt.sieloja.controller.IdiomaController;
 import br.salt.sieloja.view.util.Alert;
 
 public class CardapioItem extends LinearLayout {
 
-    
     TextView text_nome;
 
-    
     TextView text_preco;
 
-    
     IdiomaController idiomaController;
 
     public CardapioItem(Context context) {
         super(context);
+
+        this.idiomaController =
+                IdiomaController.getInstance(context.getApplicationContext());
+
+        inflate(context, R.layout.item_cardapio, this);
+
+        text_nome = findViewById(R.id.text_nome);
+        text_preco = findViewById(R.id.text_preco);
     }
 
     public void bind(Item item, String codigoIdioma){

@@ -162,6 +162,7 @@ public class MenuActivity extends BaseActivity {
                 parcialController.restParcial(calendar.getTime());
                 if(parcialController.isVerificaSeExisteParcial()){
                     Intent intent = new Intent(this, ParcialActivity.class);
+                    intent.putExtra("data", calendar.getTime());
                     startActivity(intent);
                     runOnUiThread(() -> stopProgress());
                 } else {

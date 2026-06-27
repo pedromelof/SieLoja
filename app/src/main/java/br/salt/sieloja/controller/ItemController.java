@@ -43,9 +43,11 @@ public class ItemController extends DatabaseManager {
         if (instance == null) {
             instance = new ItemController(context.getApplicationContext());
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+            instance.grupoController =
+                    GrupoController.getInstance(context.getApplicationContext());
 
             instance.request = new Retrofit.Builder()
-                    .baseUrl("http://default.url")
+                    .baseUrl("http://192.168.3.6:7781/SieWS/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                     .create(Request.class);
@@ -55,6 +57,7 @@ public class ItemController extends DatabaseManager {
     public ItemController(Context context) {
         super(context);
     }
+
 
     /**
      * Persiste ou atualiza o Item especificada no banco.
@@ -169,7 +172,7 @@ public class ItemController extends DatabaseManager {
     public void restItem() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        request.setRootUrl(configuracoes.getIpWebService());
+        
         Call<RetornoItem> call = request.requestItem(envio);
         RetornoItem retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){

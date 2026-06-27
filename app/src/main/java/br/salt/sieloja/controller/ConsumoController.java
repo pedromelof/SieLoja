@@ -44,9 +44,10 @@ public class ConsumoController extends DatabaseManager {
         if (instance == null) {
             instance = new ConsumoController(context.getApplicationContext());
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+            instance.itemController = ItemController.getInstance(context.getApplicationContext());
 
             instance.request = new Retrofit.Builder()
-                    .baseUrl("http://default.url")
+                    .baseUrl("http://192.168.3.6:7781/SieWS/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                     .create(Request.class);
@@ -196,7 +197,7 @@ public class ConsumoController extends DatabaseManager {
         envio.setTippag(consumo.getCodTipoPag());
         envio.setIp(configuracoes.getIp());
         envio.setDate(date);
-        request.setRootUrl(configuracoes.getIpWebService());
+        
         Call<Retorno> call = request.requestVenda(envio);
         Retorno retorno = call.execute().body();
         if(!retorno.isOperacaoFinalizada())

@@ -3,6 +3,8 @@ package br.salt.sieloja.view.adapter.item;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,37 +24,29 @@ import br.salt.sieloja.view.util.Alert;
 
 public class ParcialItem1 extends LinearLayout {
 
-    
     TextView textPedido;
-
-    
     TextView textStatus;
-
-    
     TextView textCliente;
-
-    
     TextView textBruto;
-
-    
     TextView textLiquido;
-
-    
     TextView textTaxa;
-
-    
     ListView listView;
-
-    
     ParcialAdapter adapter;
 
-    public ParcialItem1(Context context) { super(context); }
+    public ParcialItem1(Context context) {
+        super(context);
 
-    /*@AfterViews
-    public void afterView(){
+        inflate(context, R.layout.item_parcial1, this);
+        textPedido = findViewById(R.id.textPedido);
+        textStatus = findViewById(R.id.textStatus);
+        textCliente = findViewById(R.id.textCliente);
+        textBruto = findViewById(R.id.textBruto);
+        textLiquido = findViewById(R.id.textLiquido);
+        textTaxa = findViewById(R.id.textTaxa);
+        listView = findViewById(R.id.listView);
 
-    }*/
-
+        this.adapter = new ParcialAdapter(context);
+    }
     public void bind(Parcial parcial){
         adapter.setListItemParcial(parcial.getNumPed());
         listView.setAdapter(adapter);
@@ -72,21 +66,50 @@ public class ParcialItem1 extends LinearLayout {
     }
 
     public void calculeHeightListView() {
-        int totalHeight = 0;
+        if (adapter == null || adapter.getCount() == 0) return;
 
-        adapter = (ParcialAdapter) listView.getAdapter();
-        int lenght = adapter.getCount();
+        listView.post(() -> {
+            int totalHeight = 0;
+            int listWidth = listView.getWidth();
 
-        for (int i = 0; i < lenght; i++) {
-            View listItem = adapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-//			totalHeight += 38;
-        }
+            if (listWidth == 0) {
+                calculeHeightListView();
+                return;
+            }
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight()) * (adapter.getCount() - 1) + 20;
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(
+                    listWidth, View.MeasureSpec.EXACTLY
+            );
+            int heightSpec = View.MeasureSpec.makeMeasureSpec(
+                    0, View.MeasureSpec.UNSPECIFIED
+            );
+
+            for (int i = 0; i < adapter.getCount(); i++) {
+                View item = adapter.getView(i, null, listView);
+
+                item.setLayoutParams(new AbsListView.LayoutParams(
+                        AbsListView.LayoutParams.MATCH_PARENT,
+                        AbsListView.LayoutParams.WRAP_CONTENT
+                ));
+
+                item.measure(widthSpec, heightSpec);
+
+                totalHeight += item.getMeasuredHeight();
+
+                ViewGroup.LayoutParams lp = item.getLayoutParams();
+                if (lp instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
+                    totalHeight += mlp.topMargin + mlp.bottomMargin;
+                }
+            }
+
+            int dividersHeight = listView.getDividerHeight()
+                    * Math.max(0, adapter.getCount() - 1);
+
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + dividersHeight;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        });
     }
 }

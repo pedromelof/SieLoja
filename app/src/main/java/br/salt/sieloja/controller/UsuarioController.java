@@ -19,6 +19,8 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoUsuario;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class UsuarioController extends DatabaseManager {
@@ -32,11 +34,19 @@ public class UsuarioController extends DatabaseManager {
     private static UsuarioController instance;
     public UsuarioController(Context context) {
         super(context);
+        this.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
     }
 
     public static synchronized UsuarioController getInstance(Context context) {
         if (instance == null) {
             instance = new UsuarioController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://192.168.3.6:7781/SieWS/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
         }
         return instance;
     }
@@ -124,7 +134,7 @@ public class UsuarioController extends DatabaseManager {
     public void restUsuario() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeSeguranca());
-        request.setRootUrl(configuracoes.getIpWebService());
+        
         Call<RetornoUsuario> call = request.requestUsuario(envio);
         RetornoUsuario retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){

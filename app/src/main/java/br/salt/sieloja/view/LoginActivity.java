@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Configuracoes;
+import br.salt.sieloja.controller.EmpresaController;
+import br.salt.sieloja.controller.UsuarioController;
 import br.salt.sieloja.databinding.ActivityLoginBinding;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
@@ -32,6 +34,9 @@ public class LoginActivity extends BaseActivity {
     
     private void afterView(){
         try {
+            empresaController = EmpresaController.getInstance(this);
+            usuarioController = UsuarioController.getInstance(this);
+
             ArrayList<String> unidade = empresaController.getListUnidade();
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, unidade);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

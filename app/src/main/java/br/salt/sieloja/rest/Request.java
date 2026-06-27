@@ -22,9 +22,9 @@ import br.salt.sieloja.rest.responseobject.RetornoParcial;
 import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 import br.salt.sieloja.rest.responseobject.RetornoTipoPag;
 import br.salt.sieloja.rest.responseobject.RetornoUsuario;
+import retrofit2.http.Url;
 
 public interface Request {
-
     @POST("webresources/usuario")
     Call<RetornoUsuario> requestUsuario(@Body Envio envio);
 

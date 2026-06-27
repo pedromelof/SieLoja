@@ -23,7 +23,10 @@ public class ParcialAdapter extends BaseAdapter {
 
     
     ParcialController parcialController;
-
+    public ParcialAdapter(Context context) {
+        this.context = context;
+        this.parcialController = ParcialController.getInstance(context.getApplicationContext());
+    }
     public void setListItemParcial(String numped) {
         try {
             this.parcial = parcialController.getItemPedido(numped);
@@ -65,7 +68,6 @@ public class ParcialAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup arg2) {
-
         ParcialItem parcialItem;
         if(convertView ==  null){
             parcialItem = new ParcialItem(context);

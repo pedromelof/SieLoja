@@ -44,6 +44,9 @@ import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.bean.ItemConsumo;
 import br.salt.sieloja.bean.TipoPagamento;
 import br.salt.sieloja.bean.Usuario;
+import br.salt.sieloja.controller.ConsumoController;
+import br.salt.sieloja.controller.ItemController;
+import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.databinding.ActivityConsumoTextBinding;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
@@ -78,6 +81,12 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
 
     public void inicializarViews() {
         try {
+            adapter = new ConsumoAdapter(this, consumoController);
+            itemController = ItemController.getInstance(this);
+            consumoController = ConsumoController.getInstance(this);
+            parcialController = ParcialController.getInstance(this);
+
+
             String[] clientes = clienteController.getList();
             ArrayAdapter<String> adapterCliente = new ArrayAdapter<String>(this, R.layout.spinner_item, clientes);
             adapterCliente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

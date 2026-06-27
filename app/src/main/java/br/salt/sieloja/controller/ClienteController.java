@@ -35,17 +35,17 @@ public class ClienteController extends DatabaseManager {
     ConfiguracoesController configuracoesController;
 
     public static synchronized ClienteController getInstance(Context context) {
-        if (instance == null) {
-            instance = new ClienteController(context.getApplicationContext());
-            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+            if (instance == null) {
+                instance = new ClienteController(context.getApplicationContext());
+                instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
 
-            instance.request = new Retrofit.Builder()
-                    .baseUrl("http://default.url")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(Request.class);
-        }
-        return instance;
+                instance.request = new Retrofit.Builder()
+                        .baseUrl("http://192.168.3.6:7781/SieWS/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                        .create(Request.class);
+            }
+            return instance;
     }
     public ClienteController(Context context) {
         super(context);
@@ -103,7 +103,6 @@ public class ClienteController extends DatabaseManager {
     public void restCliente() throws SQLException, JSONException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Envio envio = new Envio(configuracoes.getIpBancoDeDados(), configuracoes.getNomeBancoDeDados());
-        request.setRootUrl(configuracoes.getIpWebService());
         Call<RetornoCliente> call = request.requestCliente(envio);
         RetornoCliente retorno = call.execute().body();
         if(retorno.isOperacaoFinalizada()){

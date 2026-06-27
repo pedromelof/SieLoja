@@ -7,9 +7,6 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 
-
-
-
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -41,36 +38,36 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ParcialController extends DatabaseManager {
 
     private static ParcialController instance;
-    
+
     Request request;
 
-    
+
     ItemController itemController;
 
-    
+
     ConsumoController consumoController;
 
-    
+
     ConfiguracoesController configuracoesController;
 
-    
+
     UsuarioController usuarioController;
 
     public static synchronized ParcialController getInstance(Context context) {
         if (instance == null) {
             instance = new ParcialController(context.getApplicationContext());
             instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+            instance.consumoController = ConsumoController.getInstance(context.getApplicationContext());
+            instance.itemController = ItemController.getInstance(context.getApplicationContext());
 
-            instance.request = new Retrofit.Builder()
-                    .baseUrl("http://default.url")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(Request.class);
+            instance.request = new Retrofit.Builder().baseUrl("http://192.168.3.6:7781/SieWS/").addConverterFactory(GsonConverterFactory.create()).build().create(Request.class);
         }
         return instance;
     }
+
     public ParcialController(Context context) {
         super(context);
+        this.usuarioController = UsuarioController.getInstance(context);
     }
 
     /**
@@ -88,7 +85,7 @@ public class ParcialController extends DatabaseManager {
      *
      * @throws SQLException
      */
-    public void deletarAll() throws SQLException{
+    public void deletarAll() throws SQLException {
         DeleteBuilder<Parcial, Integer> deleteBuilder = getHelper().getParcialDao().deleteBuilder();
         deleteBuilder.delete();
     }
@@ -104,20 +101,22 @@ public class ParcialController extends DatabaseManager {
         return getHelper().getParcialDao().query(query);
     }
 
-    public List<Parcial> getForAllPedido() throws  SQLException {
-        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().groupBy("numPed").prepare();
+    public List<Parcial> getForAllPedido() throws SQLException {
+        PreparedQuery<Parcial> query = getHelper()
+                .getParcialDao()
+                .queryBuilder()
+                .groupBy("numPed")
+                .prepare();
         return getHelper().getParcialDao().query(query);
     }
 
-    public List<Parcial> getItemPedido(String numped) throws  SQLException {
-        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true)
-                .where().eq("numPed", numped).and().ne("codItem", "TX. ADM").prepare();
+    public List<Parcial> getItemPedido(String numped) throws SQLException {
+        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true).where().eq("numPed", numped).and().ne("codItem", "TX. ADM").prepare();
         return getHelper().getParcialDao().query(query);
     }
 
-    public List<Parcial> getItemPedidoTaxa(String numped) throws  SQLException {
-        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true)
-                .where().eq("numPed", numped).and().eq("codItem", "TX. ADM").prepare();
+    public List<Parcial> getItemPedidoTaxa(String numped) throws SQLException {
+        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true).where().eq("numPed", numped).and().eq("codItem", "TX. ADM").prepare();
         return getHelper().getParcialDao().query(query);
     }
 
@@ -127,10 +126,9 @@ public class ParcialController extends DatabaseManager {
      * @return valor total.
      * @throws SQLException
      */
-    public double getTotal() throws SQLException{
+    public double getTotal() throws SQLException {
         double totalConsumo = 0;
-        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true)
-                .where().ne("codItem", "TX. ADM").prepare();
+        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true).where().ne("codItem", "TX. ADM").prepare();
         List<Parcial> parciais = getHelper().getParcialDao().query(query);
         for (Parcial parcial : parciais) {
             totalConsumo = totalConsumo + parcial.getValor();
@@ -138,10 +136,9 @@ public class ParcialController extends DatabaseManager {
         return totalConsumo;
     }
 
-    public double getTotalTaxa() throws SQLException{
+    public double getTotalTaxa() throws SQLException {
         double totalConsumo = 0;
-        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true)
-                .where().eq("codItem", "TX. ADM").prepare();
+        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true).where().eq("codItem", "TX. ADM").prepare();
         List<Parcial> parciais = getHelper().getParcialDao().query(query);
         for (Parcial parcial : parciais) {
             totalConsumo = totalConsumo + parcial.getValor();
@@ -155,7 +152,7 @@ public class ParcialController extends DatabaseManager {
      * @return valor total.
      * @throws SQLException
      */
-    public double getTotalItens() throws SQLException{
+    public double getTotalItens() throws SQLException {
         double totalItens = 0;
         for (Parcial parcial : getHelper().getParcialDao().queryForAll()) {
             totalItens = totalItens + parcial.getQtd();
@@ -169,9 +166,9 @@ public class ParcialController extends DatabaseManager {
      * @return true se existir alguma parcial; false se não existir.
      * @throws SQLException
      */
-    public boolean isVerificaSeExisteParcial() throws SQLException{
+    public boolean isVerificaSeExisteParcial() throws SQLException {
         List<Parcial> parciais = getHelper().getParcialDao().queryForAll();
-        if(parciais.size() > 0){
+        if (parciais.size() > 0) {
             return true;
         }
         return false;
@@ -182,25 +179,22 @@ public class ParcialController extends DatabaseManager {
      *
      * @throws SQLException
      */
-    public void transformarConsumoEmParcial() throws SQLException{
+    public void transformarConsumoEmParcial() throws SQLException {
         DeleteBuilder<Parcial, Integer> deleteBuilder = getHelper().getParcialDao().deleteBuilder();
         deleteBuilder.delete();
-        for(ItemConsumo itemConsumo : consumoController.getAllItemConsumo()){
+        for (ItemConsumo itemConsumo : consumoController.getAllItemConsumo()) {
             Item item = itemController.getItemFilterCodigo(itemConsumo.getCodigoItem());
             double valor = item.getPreco() * itemConsumo.getQuantidade();
-            Parcial parcial = new Parcial(itemConsumo.getCodigoItem(), item.getDescricao(), "0",
-                    valor, itemConsumo.getQuantidade(), 0);
+            Parcial parcial = new Parcial(itemConsumo.getCodigoItem(), item.getDescricao(), "0", valor, itemConsumo.getQuantidade(), 0);
             getHelper().getParcialDao().createOrUpdate(parcial);
         }
     }
 
     /**
-     *
-     *
      * @throws SQLException
      * @throws JSONException
      */
-    public void restParcial(Date date) throws SQLException, JSONException, Exception{
+    public void restParcial(Date date) throws SQLException, JSONException, Exception {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Usuario usuario = usuarioController.getUsuarioLogado();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -210,10 +204,10 @@ public class ParcialController extends DatabaseManager {
         envio.setNomeBanco(configuracoes.getNomeBancoDeDados());
         envio.setUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
         envio.setCartao(usuario.getCodigo());
-        request.setRootUrl(configuracoes.getIpWebService());
+
         Call<RetornoParcial> call = request.requestParcial(envio);
         RetornoParcial retorno = call.execute().body();
-        if(retorno.isOperacaoFinalizada()){
+        if (retorno.isOperacaoFinalizada()) {
             DeleteBuilder<Parcial, Integer> deleteBuilder = getHelper().getParcialDao().deleteBuilder();
             deleteBuilder.delete();
             for (Parcial parcial : retorno.getParcial()) {
@@ -225,12 +219,10 @@ public class ParcialController extends DatabaseManager {
     }
 
     /**
-     *
-     *
      * @throws SQLException
      * @throws JSONException
      */
-    public void restParcialImpre(Date date) throws SQLException, JSONException, Exception{
+    public void restParcialImpre(Date date) throws SQLException, JSONException, Exception {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Usuario usuario = usuarioController.getUsuarioLogado();
         EnvioConsumo envio = new EnvioConsumo();
@@ -255,21 +247,18 @@ public class ParcialController extends DatabaseManager {
         envio.setOrigem("IMPPV");
         envio.setIp(configuracoes.getIp());
         envio.setDate(date);
-        request.setRootUrl(configuracoes.getIpWebService());
+
         Call<Retorno> call = request.requestImprimirParcial(envio);
         Retorno retorno = call.execute().body();
-        if(!retorno.isOperacaoFinalizada())
-            throw new Exception(retorno.getMensagem());
+        if (!retorno.isOperacaoFinalizada()) throw new Exception(retorno.getMensagem());
     }
 
     /**
-     *
-     *
      * @param codigo
      * @param tamanho
      * @return
      */
-    private String getCodigo(String codigo, int tamanho){
+    private String getCodigo(String codigo, int tamanho) {
         for (int i = codigo.length(); i < tamanho; i++) {
             codigo = "0".concat(codigo);
         }
