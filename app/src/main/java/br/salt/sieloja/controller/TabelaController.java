@@ -5,45 +5,46 @@ import android.content.Context;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-
-
-
 import org.json.JSONException;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import br.salt.sieloja.bean.Cliente;
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.FormaPagamento;
-import br.salt.sieloja.bean.Idioma;
 import br.salt.sieloja.bean.TipoPagamento;
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoFormaPagamento;
-import br.salt.sieloja.rest.responseobject.RetornoIdioma;
-import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 import br.salt.sieloja.rest.responseobject.RetornoTipoPag;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class TabelaController extends DatabaseManager {
 
-    @RestService
-
     private static TabelaController instance;
     Request request;
-
-    
     ConfiguracoesController configuracoesController;
 
-    public static TabelaController getInstance(Context context) {
-        if (instance == null) instance = new TabelaController(context);
+    public static synchronized TabelaController getInstance(Context context) {
+        if (instance == null) {
+            instance = new TabelaController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
+        }
         return instance;
     }
     public TabelaController(Context context) {
         super(context);
+        this.configuracoesController = ConfiguracoesController.getInstance(context);
     }
 
     /**

@@ -24,11 +24,11 @@ import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoCliente;
 import br.salt.sieloja.rest.responseobject.RetornoCodBarra;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class CodBarraController extends DatabaseManager {
-
-    @RestService
 
     private static CodBarraController instance;
     Request request;
@@ -36,8 +36,17 @@ public class CodBarraController extends DatabaseManager {
     
     ConfiguracoesController configuracoesController;
 
-    public static CodBarraController getInstance(Context context) {
-        if (instance == null) instance = new CodBarraController(context);
+    public static synchronized CodBarraController getInstance(Context context) {
+        if (instance == null) {
+            instance = new CodBarraController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
+        }
         return instance;
     }
     public CodBarraController(Context context) { super(context); }

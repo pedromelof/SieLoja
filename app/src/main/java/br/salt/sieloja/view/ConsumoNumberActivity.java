@@ -10,20 +10,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
-
-
-
-
-
-
-
-
 
 import org.json.JSONException;
 
@@ -44,6 +31,7 @@ import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.bean.ItemConsumo;
 import br.salt.sieloja.bean.TipoPagamento;
 import br.salt.sieloja.bean.Usuario;
+import br.salt.sieloja.databinding.ActivityConsumoNumberBinding;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
@@ -52,39 +40,8 @@ import br.salt.sieloja.view.util.ConsumoActivity;
 
 public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivity {
 
-    
-    AutoCompleteTextView btn_item;
-
-    
-    Button btn_data;
-
-    
-    Button btn_total;
-
-    
-    EditText btn_qtd;
-
-    
-    EditText btn_valor;
-
-    
-    ListView listView;
-
-    
-    Spinner spinnerCliente;
-
-    
-    Spinner spinnerTipoP;
-
-    
-    Spinner spinnerFormaP;
-
-    
+    private ActivityConsumoNumberBinding binding;
     ConsumoAdapter adapter;
-
-    
-    Request request;
-
     private List<CodBarra> codBarra;
     private Configuracoes configuracoes;
     private DatePicker datePicker;
@@ -95,11 +52,93 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_consumo_number);
+        binding = ActivityConsumoNumberBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        inicializarViews();
+    }
+
+    private void inicializarViews() {
+        try {
+            String[] clientes = clienteController.getList();
+            ArrayAdapter<String> adapterCliente = new ArrayAdapter<String>(this, R.layout.spinner_item, clientes);
+            adapterCliente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            binding.spinnerCliente.setAdapter(adapterCliente);
+
+            String[] formaPag = tabelaController.getListFormaPag();
+            ArrayAdapter<String> adapterFormaPag = new ArrayAdapter<String>(this, R.layout.spinner_item, formaPag);
+            adapterFormaPag.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            binding.spinnerFormaP.setAdapter(adapterFormaPag);
+
+            String[] tipoPag = tabelaController.getListTipoPag();
+            ArrayAdapter<String> adapterTipoPag = new ArrayAdapter<String>(this, R.layout.spinner_item, tipoPag);
+            adapterTipoPag.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            binding.spinnerTipoP.setAdapter(adapterTipoPag);
+
+            item = null;
+            adapter.refresh(consumo, this);
+            binding.listView.setAdapter(adapter);
+            calculeHeightListView();
+            calendar = Calendar.getInstance();
+            usuario = usuarioController.getUsuarioLogado();
+            consumo = consumoController.getConsumoAberto();
+            configuracoes = configuracoesController.getConfiguracoes();
+            if(consumo == null){
+                consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "00000", "00001", "00001");
+                consumoController.salvarConsumo(consumo);
+            }
+
+            if(Integer.parseInt(usuario.getNivelDeAcesso()) < 22){
+                binding.btnValor.setEnabled(false);
+            }
+
+            Cliente c = clienteController.getClienteCod(consumo.getCodCliente());
+            FormaPagamento fp = tabelaController.getFormaPagCod(consumo.getCodFormaPag());
+            TipoPagamento tp = tabelaController.getTipoPagCod(consumo.getCodTipoPag());
+            binding.spinnerCliente.setSelection(getIdItemArray(clientes, c.getNome()));
+            binding.spinnerFormaP.setSelection(getIdItemArray(formaPag, fp.getDesfpg()));
+            binding.spinnerTipoP.setSelection(getIdItemArray(tipoPag, tp.getDestpg()));
+
+            if(configuracoes.isAlteraData()){
+                calendar.setTime(consumo.getDate());
+            }
+
+            double total = consumoController.getTotal();
+            binding.btnTotal.setText(String.format("R$ %.2f", total));
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            binding.btnData.setText(dateFormat.format(calendar.getTime()));
+            String[] itens = itemController.getAllItem();
+            final ArrayAdapter<String> adapterList = new ArrayAdapter<String>(this, R.layout.item_list_autocomplete, itens);
+            binding.btnItem.setAdapter(adapterList);
+            binding.btnItem.setThreshold(1);
+            binding.btnItem.setOnItemClickListener((parent, view, position, id) -> {
+                try {
+                    item = itemController.getItemFilterToString(adapterList.getItem(position));
+                    DecimalFormat form  = new DecimalFormat("#####0.00");
+                    String preco = String.valueOf(form.format(item.getPreco()));
+                    preco = preco.replace(",", ".");
+                    binding.btnValor.setText(preco);
+                    binding.btnQtd.requestFocus();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            binding.btnData.setOnClickListener(v -> btn_data());
+            binding.btnAdd.setOnClickListener(v -> btn_add());
+            binding.buttonFinalizar.setOnClickListener(v -> button_finalizar());
+            binding.buttonCancelar.setOnClickListener(v -> button_cancelar());
+            binding.buttonParcial.setOnClickListener(v -> button_parcial());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert.dialog(this, getString(R.string.erro_no_sql));
+        } catch (Exception e) {
+            Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     final OnClickListener onClickListener = new OnClickListener() {
@@ -121,83 +160,6 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         Alert.dialog(this, getString(R.string.venda_cancelado_com_sucesso));
     }
 
-    @AfterViews
-    void afterView(){
-        try {
-            String[] clientes = clienteController.getList();
-            ArrayAdapter<String> adapterCliente = new ArrayAdapter<String>(this, R.layout.spinner_item, clientes);
-            adapterCliente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerCliente.setAdapter(adapterCliente);
-
-            String[] formaPag = tabelaController.getListFormaPag();
-            ArrayAdapter<String> adapterFormaPag = new ArrayAdapter<String>(this, R.layout.spinner_item, formaPag);
-            adapterFormaPag.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerFormaP.setAdapter(adapterFormaPag);
-
-            String[] tipoPag = tabelaController.getListTipoPag();
-            ArrayAdapter<String> adapterTipoPag = new ArrayAdapter<String>(this, R.layout.spinner_item, tipoPag);
-            adapterTipoPag.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerTipoP.setAdapter(adapterTipoPag);
-
-            item = null;
-            adapter.refresh(consumo, this);
-            listView.setAdapter(adapter);
-            calculeHeightListView();
-            calendar = Calendar.getInstance();
-            usuario = usuarioController.getUsuarioLogado();
-            consumo = consumoController.getConsumoAberto();
-            configuracoes = configuracoesController.getConfiguracoes();
-            if(consumo == null){
-                consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "00000", "00001", "00001");
-                consumoController.salvarConsumo(consumo);
-            }
-
-            if(Integer.parseInt(usuario.getNivelDeAcesso()) < 22){
-                btn_valor.setEnabled(false);
-            }
-
-            Cliente c = clienteController.getClienteCod(consumo.getCodCliente());
-            FormaPagamento fp = tabelaController.getFormaPagCod(consumo.getCodFormaPag());
-            TipoPagamento tp = tabelaController.getTipoPagCod(consumo.getCodTipoPag());
-            spinnerCliente.setSelection(getIdItemArray(clientes, c.getNome()));
-            spinnerFormaP.setSelection(getIdItemArray(formaPag, fp.getDesfpg()));
-            spinnerTipoP.setSelection(getIdItemArray(tipoPag, tp.getDestpg()));
-
-            if(configuracoes.isAlteraData()){
-                calendar.setTime(consumo.getDate());
-            }
-
-            double total = consumoController.getTotal();
-            btn_total.setText(String.format("R$ %.2f", total));
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            btn_data.setText(dateFormat.format(calendar.getTime()));
-            String[] itens = itemController.getAllItem();
-            final ArrayAdapter<String> adapterList = new ArrayAdapter<String>(this, R.layout.item_list_autocomplete, itens);
-            btn_item.setAdapter(adapterList);
-            btn_item.setThreshold(1);
-            btn_item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        item = itemController.getItemFilterToString(adapterList.getItem(position));
-                        DecimalFormat form  = new DecimalFormat("#####0.00");
-                        String preco = String.valueOf(form.format(item.getPreco()));
-                        preco = preco.replace(",", ".");
-                        btn_valor.setText(preco);
-                        btn_qtd.requestFocus();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }});
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Alert.dialog(this, getString(R.string.erro_no_sql));
-        } catch (Exception e) {
-            Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    @Click
     public void btn_data(){
         if(configuracoes.isAlteraData()){
             View view;
@@ -208,9 +170,8 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
     }
 
-    @Click
     public void btn_add(){
-        String quantidade = btn_qtd.getText().toString();
+        String quantidade = binding.btnQtd.getText().toString();
         if(item == null){
             Alert.dialog(this, getString(R.string.informe_item));
         } else if(quantidade.equalsIgnoreCase("")){
@@ -243,8 +204,8 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
 
     private void addItem(int which) {
         try {
-            String quantidade = btn_qtd.getText().toString();
-            String txt_valor = btn_valor.getText().toString();
+            String quantidade = binding.btnQtd.getText().toString();
+            String txt_valor = binding.btnValor.getText().toString();
             txt_valor = txt_valor.replace(",", ".");
             double qtd = Double.parseDouble(quantidade);
             double valor = Double.parseDouble(txt_valor);
@@ -258,10 +219,10 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             consumoController.salvarItemConsumo(itemConsumo);
             adapter.refresh(consumo);
             item = null;
-            btn_item.setText("");
-            btn_qtd.setText("");
-            btn_valor.setText("");
-            btn_item.requestFocus();
+            binding.btnItem.setText("");
+            binding.btnQtd.setText("");
+            binding.btnValor.setText("");
+            binding.btnItem.requestFocus();
         } catch (SQLException e) {
             e.printStackTrace();
             Alert.dialog(this, getString(R.string.erro_no_sql));
@@ -271,7 +232,6 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
     }
 
-    @Click
     public void button_finalizar(){
         if(validaCampos()){
             try {
@@ -283,35 +243,34 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
     }
 
-    @Click
     public void button_cancelar(){
         Alert.dialogValidation(this, getString(R.string.confirmar_cancelamento_venda), onClickListener);
     }
 
-    @Click
     public void button_parcial(){
         parcial();
     }
 
-    @Background
     public void parcial(){
-        startProgress();
-        try {
-            if(consumoController.getAllItemConsumo().size() > 0){
-                parcialController.transformarConsumoEmParcial();
-                Intent intent = new Intent(this, ParcialActivity.class);
-                startActivity(intent);
-                stopProgress();
-            } else {
-                stopProgress(getString(R.string.nenhum_item_foi_lancado));
+        new Thread(() -> {
+            runOnUiThread(() -> startProgress());
+            try {
+                if(consumoController.getAllItemConsumo().size() > 0){
+                    parcialController.transformarConsumoEmParcial();
+                    Intent intent = new Intent(this, ParcialActivity.class);
+                    startActivity(intent);
+                    runOnUiThread(() -> stopProgress());
+                } else {
+                    runOnUiThread(() -> stopProgress(getString(R.string.nenhum_item_foi_lancado)));
+                }
+            } catch (SQLException e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));
+                e.printStackTrace();
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage()));
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            stopProgress(getString(R.string.erro_no_sql) + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage());
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     public boolean validaCampos(){
@@ -335,17 +294,16 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         return valida;
     }
 
-    @UiThread
     public void limparTela(){
         try {
             consumoController.deletarAll();
             consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "", "", "");
             item = null;
             adapter.refresh(consumo);
-            listView.setAdapter(adapter);
-            btn_item.setText("");
-            btn_qtd.setText("");
-            btn_valor.setText("");
+            binding.listView.setAdapter(adapter);
+            binding.btnItem.setText("");
+            binding.btnQtd.setText("");
+            binding.btnValor.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
             Alert.dialog(this, getString(R.string.erro_no_sql));
@@ -355,58 +313,58 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
     }
 
-    @Background
     public void finalizarConsumo(){
-        startProgress();
-        try {
-            String cliente = spinnerCliente.getSelectedItem().toString();
-            String formaPg = spinnerFormaP.getSelectedItem().toString();
-            String tipoPg = spinnerTipoP.getSelectedItem().toString();
-            String codCliente = clienteController.getClienteNom(cliente).getCodigo();
-            String codForma = tabelaController.getFormaPagDes(formaPg).getForpag();
-            String codTipo = tabelaController.getTipoPagDes(tipoPg).getTippag();
-            consumo.setCodCliente(codCliente);
-            consumo.setCodFormaPag(codForma);
-            consumo.setCodTipoPag(codTipo);
-            if (configuracoes.isAlteraData()) {
-                consumoController.restConsumo(consumo, usuario, calendar.getTime());
-            } else {
-                consumoController.restConsumo(consumo, usuario, null);
+        new Thread(() -> {
+            runOnUiThread(() -> startProgress());
+            try {
+                String cliente = binding.spinnerCliente.getSelectedItem().toString();
+                String formaPg = binding.spinnerFormaP.getSelectedItem().toString();
+                String tipoPg = binding.spinnerTipoP.getSelectedItem().toString();
+                String codCliente = clienteController.getClienteNom(cliente).getCodigo();
+                String codForma = tabelaController.getFormaPagDes(formaPg).getForpag();
+                String codTipo = tabelaController.getTipoPagDes(tipoPg).getTippag();
+                consumo.setCodCliente(codCliente);
+                consumo.setCodFormaPag(codForma);
+                consumo.setCodTipoPag(codTipo);
+                if (configuracoes.isAlteraData()) {
+                    consumoController.restConsumo(consumo, usuario, calendar.getTime());
+                } else {
+                    consumoController.restConsumo(consumo, usuario, null);
+                }
+                runOnUiThread(() -> {
+                    limparTela();
+                    stopProgress(getString(R.string.venda_finalizada));
+                });
+            } catch (JSONException | SQLException e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));
+                e.printStackTrace();
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage()));
+                e.printStackTrace();
             }
-            limparTela();
-            stopProgress(getString(R.string.venda_finalizada));
-        } catch (JSONException e) {
-            stopProgress(getString(R.string.erro_no_json) + e.getMessage());
-            e.printStackTrace();
-        } catch (SQLException e) {
-            stopProgress(getString(R.string.erro_no_sql) + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage());
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     public void calculeHeightListView() {
         int totalHeight = 0;
 
-        adapter = (ConsumoAdapter) listView.getAdapter();
+        adapter = (ConsumoAdapter) binding.listView.getAdapter();
         int lenght = adapter.getCount();
 
         for (int i = 0; i < lenght; i++) {
-            View listItem = adapter.getView(i, null, listView);
+            View listItem = adapter.getView(i, null, binding.listView);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
         }
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight())	* (adapter.getCount() - 1);
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+        ViewGroup.LayoutParams params = binding.listView.getLayoutParams();
+        params.height = totalHeight + (binding.listView.getDividerHeight())	* (adapter.getCount() - 1);
+        binding.listView.setLayoutParams(params);
+        binding.listView.requestLayout();
 
         try {
             double total = consumoController.getTotal();
-            btn_total.setText(String.format("R$ %.2f", total));
+            binding.btnTotal.setText(String.format("R$ %.2f", total));
         } catch (SQLException e) {
             Alert.dialog(this, getString(R.string.erro_no_sql));
             e.printStackTrace();
@@ -421,7 +379,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             calendar.set(year, month, day);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             consumo.setDate(calendar.getTime());
-            btn_data.setText(dateFormat.format(consumo.getDate()));
+            binding.btnData.setText(dateFormat.format(consumo.getDate()));
             consumoController.salvarConsumo(consumo);
         } catch (SQLException e) {
             Alert.dialog(this, getString(R.string.erro_no_sql));

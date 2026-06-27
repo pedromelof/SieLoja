@@ -3,6 +3,7 @@ package br.salt.sieloja.view.adapter.item;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,28 +29,14 @@ import br.salt.sieloja.view.util.Alert;
 
 public class ConsumoItem2 extends LinearLayout {
 
-    
     TextView produto;
-
-    
     EditText qtd;
-
-    
     EditText valor;
-
-    
     TextView tvCodBarra;
 
-    
     ItemController itemController;
-
-    
     ConsumoController consumoController;
-
-    
     CodBarraController codBarraController;
-
-    
     UsuarioController usuarioController;
 
     private ItemConsumo itemConsumo;
@@ -57,6 +44,19 @@ public class ConsumoItem2 extends LinearLayout {
 
     public ConsumoItem2(Context context) {
         super(context);
+        LayoutInflater.from(context).inflate(R.layout.item_consumo_2, this, true);
+
+        this.itemController = ItemController.getInstance(context);
+        this.consumoController = ConsumoController.getInstance(context);
+        this.codBarraController = CodBarraController.getInstance(context);
+        this.usuarioController = UsuarioController.getInstance(context);
+
+        this.produto = findViewById(R.id.produto);
+        this.qtd = findViewById(R.id.qtd);
+        this.valor = findViewById(R.id.valor);
+        this.tvCodBarra = findViewById(R.id.tvCodBarra);
+
+        inicializarViews();
     }
 
     public void bind(ItemConsumo itemConsumo, ConsumoAdapter consumoAdapter){
@@ -85,8 +85,7 @@ public class ConsumoItem2 extends LinearLayout {
         }
     }
 
-    @AfterViews
-    public void afterView(){
+    public void inicializarViews(){
         qtd.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text_qtd = qtd.getText().toString();
@@ -128,9 +127,10 @@ public class ConsumoItem2 extends LinearLayout {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void afterTextChanged(Editable s) {}
         });
+
+        findViewById(R.id.deletar).setOnClickListener(v -> deletar());
     }
 
-    @Click
     public void deletar(){
         try {
             consumoController.deletarItemConsumo(itemConsumo);

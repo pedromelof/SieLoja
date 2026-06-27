@@ -9,11 +9,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
 
-
-
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import org.json.JSONException;
 
 import java.sql.SQLException;
@@ -21,30 +16,37 @@ import java.util.Calendar;
 
 import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Configuracoes;
+import br.salt.sieloja.databinding.ActivityMenuBinding;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
-@WindowFeature({ Window.FEATURE_NO_TITLE })
 public class MenuActivity extends BaseActivity {
 
-    @RestService
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-    }
-    
     Request request;
 
     private DatePicker datePicker;
+
+    private ActivityMenuBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        binding = ActivityMenuBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        inicializarViews();
+    }
+
+    private void inicializarViews() {
+        binding.buttonConsumo.setOnClickListener(v -> button_consumo());
+        binding.buttonParcial.setOnClickListener(v -> button_parcial());
+        binding.buttonCardapio.setOnClickListener(v -> button_cardapio());
+        binding.buttonConfiguracoes.setOnClickListener(v -> button_configuracoes());
+        binding.buttonSincronizar.setOnClickListener(v -> button_sincronizar());
+        binding.buttonSair.setOnClickListener(v -> button_sair());
     }
     
     final OnClickListener onClickListenerLogaut = new OnClickListener() {
@@ -66,14 +68,12 @@ public class MenuActivity extends BaseActivity {
         super.onResume();
     }
 
-    @Click
     public void button_consumo(){
         try {
             Configuracoes configuracoes = configuracoesController.getConfiguracoes();
             if(configuracoes.getTypeKey().equalsIgnoreCase(Configuracoes.TYPE_KEY_NUMBER)){
                 Intent intent = new Intent(this, ConsumoNumberActivity.class);
                 startActivity(intent);
-
             } else {
                 Intent intent = new Intent(this, ConsumoTextActivity.class);
                 startActivity(intent);
@@ -83,7 +83,6 @@ public class MenuActivity extends BaseActivity {
         }
     }
 
-    @Click
     public void button_parcial(){
         View view;
         view = (View) LayoutInflater.from(this).inflate(R.layout.dialog_data, null);
@@ -91,18 +90,15 @@ public class MenuActivity extends BaseActivity {
         Alert.dialogPersonalizado(this, onClickListenerParcial, view);
     }
 
-    @Click
     public void button_cardapio(){
         Intent intent = new Intent(this, CardapioActivity.class);
         startActivity(intent);
     }
 
-    @Click
     public void button_configuracoes(){
         Intent intent = new Intent(this, ConfiguracoesActivity.class);
         startActivity(intent); }
 
-    @Click
     public void button_sincronizar(){
         try {
             Configuracoes configuracoes = configuracoesController.getConfiguracoes();
@@ -115,7 +111,6 @@ public class MenuActivity extends BaseActivity {
         }
     }
 
-    @Click
     public void button_sair(){
         try {
             if(consumoController.isVerificaSeTemAlgumConsumoAberto()){
@@ -132,55 +127,57 @@ public class MenuActivity extends BaseActivity {
         }
     }
 
-    @Background
     public void sincronizar(){
-        startProgress();
-        try {
-            grupoController.restGrupo();
-            subgrupoController.restSubgrupo();
-            idiomaController.restIdioma();
-            itemController.restItem();
-            codBarraController.restCodBarra();
-            tabelaController.restFormaPag();
-            tabelaController.restTipoPag();
-            clienteController.restCliente();
-            stopProgress(getString(R.string.sincronizado_com_sucesso));
-        } catch (SQLException e) {
-            stopProgress(getString(R.string.erro_no_sql) + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage());
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            startProgress();
+            try {
+                grupoController.restGrupo();
+                subgrupoController.restSubgrupo();
+                idiomaController.restIdioma();
+                itemController.restItem();
+                codBarraController.restCodBarra();
+                tabelaController.restFormaPag();
+                tabelaController.restTipoPag();
+                clienteController.restCliente();
+                runOnUiThread(() -> stopProgress(getString(R.string.sincronizado_com_sucesso)));
+            } catch (SQLException e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));
+                e.printStackTrace();
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage()));
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-    @Background
     public void procutandoParcial(){
-        startProgress();
-        try {
-            int day = datePicker.getDayOfMonth();
-            int month = datePicker.getMonth();
-            int year = datePicker.getYear();
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(year, month, day);
-            parcialController.restParcial(calendar.getTime());
-            if(parcialController.isVerificaSeExisteParcial()){
-                Intent intent = new Intent(this, ParcialActivity.class);
-                startActivity(intent);
-                stopProgress();
-            } else {
-                stopProgress(getString(R.string.nenhuma_venda_foi_encontrado));
+        new Thread(() -> {
+            startProgress();
+            try {
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth();
+                int year = datePicker.getYear();
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                parcialController.restParcial(calendar.getTime());
+                if(parcialController.isVerificaSeExisteParcial()){
+                    Intent intent = new Intent(this, ParcialActivity.class);
+                    startActivity(intent);
+                    runOnUiThread(() -> stopProgress());
+                } else {
+                    runOnUiThread(() -> stopProgress(getString(R.string.nenhuma_venda_foi_encontrado)));
+                }
+            } catch (JSONException e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_no_json) + e.getMessage()));
+                e.printStackTrace();
+            } catch (SQLException e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));
+                e.printStackTrace();
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage()));
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            stopProgress(getString(R.string.erro_no_json) + e.getMessage());
-            e.printStackTrace();
-        } catch (SQLException e) {
-            stopProgress(getString(R.string.erro_no_sql) + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage());
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     private void parcial(){

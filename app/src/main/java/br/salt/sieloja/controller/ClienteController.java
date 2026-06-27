@@ -22,11 +22,12 @@ import br.salt.sieloja.rest.responseobject.RetornoCliente;
 import br.salt.sieloja.rest.responseobject.RetornoFormaPagamento;
 import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ClienteController extends DatabaseManager {
 
-    @RestService
     private static ClienteController instance;
     Request request;
 
@@ -36,6 +37,13 @@ public class ClienteController extends DatabaseManager {
     public static synchronized ClienteController getInstance(Context context) {
         if (instance == null) {
             instance = new ClienteController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
         }
         return instance;
     }

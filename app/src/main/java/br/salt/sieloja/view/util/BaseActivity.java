@@ -119,20 +119,19 @@ public class BaseActivity extends FragmentActivity {
         }
     }
 
-    @UiThread
     protected void startProgress() {
-        progressDialog.show();
+        runOnUiThread(() -> progressDialog.show());
     }
 
-    @UiThread
     protected void stopProgress(String mensagem) {
-        progressDialog.hide();
-        Alert.dialog(this, mensagem);
+        runOnUiThread(() -> {
+            progressDialog.hide();
+            Alert.dialog(this, mensagem);
+        });
     }
 
-    @UiThread
     protected void stopProgress() {
-        progressDialog.hide();
+        runOnUiThread(() -> progressDialog.hide());
     }
 
     public String intToIp() {

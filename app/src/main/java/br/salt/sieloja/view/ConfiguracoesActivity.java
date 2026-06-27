@@ -13,132 +13,73 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-
-
-
-
-
-
 import java.sql.SQLException;
 
 import br.salt.sieloja.R;
 import br.salt.sieloja.bean.Configuracoes;
+import br.salt.sieloja.databinding.ActivityConfiguracoesBinding;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
 
-@SuppressLint("NonConstantResourceId")
 public class ConfiguracoesActivity extends BaseActivity {
-
-    
-    EditText editTextNumeroEquipamento;
-
-    
-    EditText editTextUnidade;
-
-    
-    EditText editTextIpWebService;
-
-    
-    EditText editTextIpBancoDeDados;
-
-    
-    EditText editTextNomeBancoDeDados;
-
-    
-    EditText editTextSeguranca;
-
-    
-    TextView textViewVercaoApp;
-
-    
-    TextView textVercaoWebService;
-
-    
-    TextView textViewVercaoAndroid;
-
-    
-    TextView textViewRedeWifi;
-
-    
-    TextView textVercaoApp;
-
-    
-    TextView textVercaoAndroid;
-
-    
-    TextView textNumeroDoModelo;
-
-    
-    TextView textWifi;
-
-    
-    TextView textVelocidade;
-
-    
-    TextView textIP;
-
-    
-    Spinner spinnerTypeKey;
-
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    
-    Switch switchAlterarData;
-
+    private ActivityConfiguracoesBinding binding;
     private Configuracoes configuracoes;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configuracoes);
+        binding = ActivityConfiguracoesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        inicializarViews();
     }
+
     @SuppressLint("SetTextI18n")
-    @AfterViews
-    public void afterView(){
+    public void inicializarViews(){
         int width = this.getResources().getDisplayMetrics().widthPixels/2;
-        textViewVercaoApp.setWidth(width);
-        textViewVercaoAndroid.setWidth(width);
-        textViewRedeWifi.setWidth(width);
-        textVercaoAndroid.setText(Build.VERSION.RELEASE);
-        textNumeroDoModelo.setText(Build.MODEL);
+        binding.textViewVercaoApp.setWidth(width);
+        binding.textViewVercaoAndroid.setWidth(width);
+        binding.textViewRedeWifi.setWidth(width);
+        binding.textVercaoAndroid.setText(Build.VERSION.RELEASE);
+        binding.textNumeroDoModelo.setText(Build.MODEL);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.typeKey, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTypeKey.setAdapter(adapter);
+        binding.spinnerTypeKey.setAdapter(adapter);
 
         WifiManager wifiMgr = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-        textWifi.setText(wifiInfo.getSSID().replace("\"", ""));
-        textVelocidade.setText(wifiInfo.getLinkSpeed() + " " + WifiInfo.LINK_SPEED_UNITS);
-        textIP.setText(String.valueOf(intToIp()));
+        binding.textWifi.setText(wifiInfo.getSSID().replace("\"", ""));
+        binding.textVelocidade.setText(wifiInfo.getLinkSpeed() + " " + WifiInfo.LINK_SPEED_UNITS);
+        binding.textIP.setText(String.valueOf(intToIp()));
 
         try {
-            textVercaoApp.setText(String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
+            binding.textVercaoApp.setText(String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
         } catch (Exception e) {
             Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
             e.printStackTrace();
         }
 
-
         try {
             if(!usuarioController.getUsuarioLogado().getNivelDeAcesso().equalsIgnoreCase("99")){
-                editTextNumeroEquipamento.setEnabled(false);
-                editTextUnidade.setEnabled(false);
-                editTextIpWebService.setEnabled(false);
-                editTextIpBancoDeDados.setEnabled(false);
-                editTextNomeBancoDeDados.setEnabled(false);
-                editTextSeguranca.setEnabled(false);
+                binding.editTextNumeroEquipamento.setEnabled(false);
+                binding.editTextUnidade.setEnabled(false);
+                binding.editTextIpWebService.setEnabled(false);
+                binding.editTextIpBancoDeDados.setEnabled(false);
+                binding.editTextNomeBancoDeDados.setEnabled(false);
+                binding.editTextSeguranca.setEnabled(false);
             }
 
             configuracoes = configuracoesController.getConfiguracoes();
-            editTextNumeroEquipamento.setText(configuracoes.getEquipamento());
-            editTextUnidade.setText(configuracoes.getUnidadeAdm());
-            editTextIpWebService.setText(configuracoes.getIpWebService());
-            editTextIpBancoDeDados.setText(configuracoes.getIpBancoDeDados());
-            editTextNomeBancoDeDados.setText(configuracoes.getNomeBancoDeDados());
-            editTextSeguranca.setText(configuracoes.getNomeSeguranca());
-            switchAlterarData.setChecked(configuracoes.isAlteraData());
+            binding.editTextNumeroEquipamento.setText(configuracoes.getEquipamento());
+            binding.editTextUnidade.setText(configuracoes.getUnidadeAdm());
+            binding.editTextIpWebService.setText(configuracoes.getIpWebService());
+            binding.editTextIpBancoDeDados.setText(configuracoes.getIpBancoDeDados());
+            binding.editTextNomeBancoDeDados.setText(configuracoes.getNomeBancoDeDados());
+            binding.editTextSeguranca.setText(configuracoes.getNomeSeguranca());
+            binding.switchAlterarData.setChecked(configuracoes.isAlteraData());
         } catch (SQLException e) {
             e.printStackTrace();
             Alert.dialog(this, getString(R.string.erro_no_sql));
@@ -146,18 +87,19 @@ public class ConfiguracoesActivity extends BaseActivity {
             Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
             e.printStackTrace();
         }
+
+        binding.buttonSalvar.setOnClickListener(v -> buttonSalvar());
     }
 
-    @Click
     public void buttonSalvar() {
-        String equipamento = editTextNumeroEquipamento.getText().toString();
-        String unidade = editTextUnidade.getText().toString();
-        String ipWebService = editTextIpWebService.getText().toString();
-        String ipBancoDeDados = editTextIpBancoDeDados.getText().toString();
-        String nomeBancoDeDados = editTextNomeBancoDeDados.getText().toString();
-        String nomeSeguranca = editTextSeguranca.getText().toString();
-        String typeKey = spinnerTypeKey.getSelectedItem().toString();
-        boolean alteraData = switchAlterarData.isChecked();
+        String equipamento = binding.editTextNumeroEquipamento.getText().toString();
+        String unidade = binding.editTextUnidade.getText().toString();
+        String ipWebService = binding.editTextIpWebService.getText().toString();
+        String ipBancoDeDados = binding.editTextIpBancoDeDados.getText().toString();
+        String nomeBancoDeDados = binding.editTextNomeBancoDeDados.getText().toString();
+        String nomeSeguranca = binding.editTextSeguranca.getText().toString();
+        String typeKey = binding.spinnerTypeKey.getSelectedItem().toString();
+        boolean alteraData = binding.switchAlterarData.isChecked();
 
         if(equipamento.equalsIgnoreCase("") || unidade.equalsIgnoreCase("") || nomeSeguranca.equalsIgnoreCase("") ||
                 ipBancoDeDados.equalsIgnoreCase("") || nomeBancoDeDados.equalsIgnoreCase("")){

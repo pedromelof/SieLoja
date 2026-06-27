@@ -23,18 +23,29 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoIdioma;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class IdiomaController extends DatabaseManager {
 
+    private static IdiomaController instance;
     
     Request request;
 
-    
     ConfiguracoesController configuracoesController;
 
-    public static IdiomaController getInstance(Context context) {
-        if (instance == null) instance = new IdiomaController(context);
+    public static synchronized IdiomaController getInstance(Context context) {
+        if (instance == null) {
+            instance = new IdiomaController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
+        }
         return instance;
     }
     public IdiomaController(Context context) {

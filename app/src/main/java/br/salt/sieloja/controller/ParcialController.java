@@ -34,11 +34,12 @@ import br.salt.sieloja.rest.responseobject.Retorno;
 import br.salt.sieloja.rest.responseobject.RetornoParcial;
 import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ParcialController extends DatabaseManager {
 
-    @RestService
     private static ParcialController instance;
     
     Request request;
@@ -55,8 +56,17 @@ public class ParcialController extends DatabaseManager {
     
     UsuarioController usuarioController;
 
-    public static ParcialController getInstance(Context context) {
-        if (instance == null) instance = new ParcialController(context);
+    public static synchronized ParcialController getInstance(Context context) {
+        if (instance == null) {
+            instance = new ParcialController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
+        }
         return instance;
     }
     public ParcialController(Context context) {

@@ -4,12 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-
-
-
-
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,18 +12,19 @@ import br.salt.sieloja.bean.Parcial;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.view.adapter.item.ParcialItem1;
 
-
 public class Parcial1Adapter extends BaseAdapter {
 
     List<Parcial> parcial;
 
-    
     Context context;
 
-    
     ParcialController parcialController;
 
-    @AfterInject
+    public Parcial1Adapter(Context context) {
+        this.context = context;
+        this.parcialController = ParcialController.getInstance(context);
+        setListItemParcial();
+    }
     public void setListItemParcial(){
         try {
             this.parcial = parcialController.getForAllPedido();

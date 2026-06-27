@@ -27,23 +27,29 @@ import br.salt.sieloja.rest.responseobject.RetornoItem;
 import br.salt.sieloja.rest.responseobject.RetornoUsuario;
 import br.salt.sieloja.view.util.BaseActivity;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ItemController extends DatabaseManager {
 
-    @Bean
 
     private static ItemController instance;
     GrupoController grupoController;
-
-    
     ConfiguracoesController configuracoesController;
-
-    
     Request request;
 
-    public static ItemController getInstance(Context context) {
-        if (instance == null) instance = new ItemController(context);
+    public static synchronized ItemController getInstance(Context context) {
+        if (instance == null) {
+            instance = new ItemController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
+        }
         return instance;
     }
     public ItemController(Context context) {

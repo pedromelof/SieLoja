@@ -63,6 +63,4 @@ public interface Request {
 
     @POST("webresources/tab/tipoPag")
     Call<RetornoTipoPag> requestTipoPag(@Body Envio envio);
-
-    void setRootUrl(String rootUrl);
 }

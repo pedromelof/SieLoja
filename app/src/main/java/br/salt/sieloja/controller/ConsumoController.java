@@ -24,11 +24,12 @@ import br.salt.sieloja.rest.responseobject.EnvioItemConsumo;
 import br.salt.sieloja.rest.responseobject.EnvioItemConsumoIns;
 import br.salt.sieloja.rest.responseobject.Retorno;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ConsumoController extends DatabaseManager {
 
-    @RestService
 
     private static ConsumoController instance;
     Request request;
@@ -42,6 +43,13 @@ public class ConsumoController extends DatabaseManager {
     public static synchronized ConsumoController getInstance(Context context) {
         if (instance == null) {
             instance = new ConsumoController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
         }
         return instance;
     }

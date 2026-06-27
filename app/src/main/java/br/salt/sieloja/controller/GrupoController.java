@@ -24,11 +24,12 @@ import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.responseobject.Envio;
 import br.salt.sieloja.rest.responseobject.RetornoGrupo;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class GrupoController extends DatabaseManager {
 
-    @RestService
     private static GrupoController instance;
     
     Request request;
@@ -36,8 +37,17 @@ public class GrupoController extends DatabaseManager {
     
     ConfiguracoesController configuracoesController;
 
-    public static GrupoController getInstance(Context context) {
-        if (instance == null) instance = new GrupoController(context);
+    public static synchronized GrupoController getInstance(Context context) {
+        if (instance == null) {
+            instance = new GrupoController(context.getApplicationContext());
+            instance.configuracoesController = ConfiguracoesController.getInstance(context.getApplicationContext());
+
+            instance.request = new Retrofit.Builder()
+                    .baseUrl("http://default.url")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(Request.class);
+        }
         return instance;
     }
     public GrupoController(Context context) {
