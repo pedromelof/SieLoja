@@ -55,6 +55,7 @@ public class ConfiguracoesActivity extends BaseActivity {
         binding.textVelocidade.setText(wifiInfo.getLinkSpeed() + " " + WifiInfo.LINK_SPEED_UNITS);
         binding.textIP.setText(String.valueOf(intToIp()));
 
+        // Teste Increment Version
         try {
             binding.textVercaoApp.setText(String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
         } catch (Exception e) {
