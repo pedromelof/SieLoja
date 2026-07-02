@@ -1,5 +1,8 @@
 package br.salt.sieloja.rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -23,10 +26,14 @@ public class RequestClient {
             baseUrl += "/";
         }
 
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .create();
+
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(getOkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
                 .create(Request.class);
     }
