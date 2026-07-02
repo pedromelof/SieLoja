@@ -36,6 +36,7 @@ jobs:
           sed -i "s/versionName \"$VERSION_NAME\"/versionName \"$NEW_VERSION_NAME\"/" app/build.gradle
           sed -i "s/versionCode $VERSION_CODE/versionCode $NEW_VERSION_CODE/" app/build.gradle
 
+          echo "NEW_VERSION_NAME=$NEW_VERSION_NAME" >> $GITHUB_ENV
           echo "Nova versão: $NEW_VERSION_NAME (Code: $NEW_VERSION_CODE)"
 
       - name: Commit and push
