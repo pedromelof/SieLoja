@@ -79,6 +79,8 @@ public class ParcialActivity extends BaseActivity {
 
             binding.buttonSalvar.setOnClickListener(v -> buttonSalvar());
             binding.buttonImpri.setOnClickListener(v -> buttonImpri());
+
+            calculeHeightListView();
         } catch (SQLException e) {
             e.printStackTrace();
             Alert.dialog(this, getString(R.string.erro_no_sql));

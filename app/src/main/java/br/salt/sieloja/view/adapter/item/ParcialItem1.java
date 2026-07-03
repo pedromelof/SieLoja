@@ -66,50 +66,21 @@ public class ParcialItem1 extends LinearLayout {
     }
 
     public void calculeHeightListView() {
-        if (adapter == null || adapter.getCount() == 0) return;
+        int totalHeight = 0;
 
-        listView.post(() -> {
-            int totalHeight = 0;
-            int listWidth = listView.getWidth();
+        adapter = (ParcialAdapter) listView.getAdapter();
+        int lenght = adapter.getCount();
 
-            if (listWidth == 0) {
-                calculeHeightListView();
-                return;
-            }
+        for (int i = 0; i < lenght; i++) {
+            View listItem = adapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+//			totalHeight += 38;
+        }
 
-            int widthSpec = View.MeasureSpec.makeMeasureSpec(
-                    listWidth, View.MeasureSpec.EXACTLY
-            );
-            int heightSpec = View.MeasureSpec.makeMeasureSpec(
-                    0, View.MeasureSpec.UNSPECIFIED
-            );
-
-            for (int i = 0; i < adapter.getCount(); i++) {
-                View item = adapter.getView(i, null, listView);
-
-                item.setLayoutParams(new AbsListView.LayoutParams(
-                        AbsListView.LayoutParams.MATCH_PARENT,
-                        AbsListView.LayoutParams.WRAP_CONTENT
-                ));
-
-                item.measure(widthSpec, heightSpec);
-
-                totalHeight += item.getMeasuredHeight();
-
-                ViewGroup.LayoutParams lp = item.getLayoutParams();
-                if (lp instanceof ViewGroup.MarginLayoutParams) {
-                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
-                    totalHeight += mlp.topMargin + mlp.bottomMargin;
-                }
-            }
-
-            int dividersHeight = listView.getDividerHeight()
-                    * Math.max(0, adapter.getCount() - 1);
-
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = totalHeight + dividersHeight;
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-        });
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight()) * (adapter.getCount() - 1) + 20;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }
