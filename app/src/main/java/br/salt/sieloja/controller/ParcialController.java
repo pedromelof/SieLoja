@@ -1,8 +1,10 @@
 package br.salt.sieloja.controller;
 
 import android.content.Context;
+import android.util.Log;
 
 
+import com.google.gson.Gson;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -15,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Item;
@@ -100,11 +103,7 @@ public class ParcialController extends DatabaseManager {
     }
 
     public List<Parcial> getForAllPedido() throws SQLException {
-        PreparedQuery<Parcial> query = getHelper()
-                .getParcialDao()
-                .queryBuilder()
-                .groupBy("numPed")
-                .prepare();
+        PreparedQuery<Parcial> query = getHelper().getParcialDao().queryBuilder().orderBy("decItem", true).where().ne("codItem", "TX. ADM").prepare();
         return getHelper().getParcialDao().query(query);
     }
 
@@ -183,7 +182,7 @@ public class ParcialController extends DatabaseManager {
         for (ItemConsumo itemConsumo : consumoController.getAllItemConsumo()) {
             Item item = itemController.getItemFilterCodigo(itemConsumo.getCodigoItem());
             double valor = item.getPreco() * itemConsumo.getQuantidade();
-            Parcial parcial = new Parcial(itemConsumo.getCodigoItem(), item.getDescricao(), "0", valor, itemConsumo.getQuantidade(), 0);
+            Parcial parcial = new Parcial(itemConsumo.getCodigoItem(), item.getDescricao(), "0", valor, itemConsumo.getQuantidade(), 0, item.getTipPag(), item.getForPag());
             getHelper().getParcialDao().createOrUpdate(parcial);
         }
     }
@@ -192,12 +191,13 @@ public class ParcialController extends DatabaseManager {
      * @throws SQLException
      * @throws JSONException
      */
-    public void restParcial(Date date) throws SQLException, JSONException, Exception {
+    public void restParcial(Date dataInicio, Date dataFim) throws SQLException, JSONException, Exception {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Usuario usuario = usuarioController.getUsuarioLogado();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         EnvioParcial envio = new EnvioParcial();
-        envio.setData(dateFormat.format(date));
+        envio.setDataInicio(dateFormat.format(dataInicio));
+        envio.setDataFim(dateFormat.format(dataFim));
         envio.setIpBanco(configuracoes.getIpBancoDeDados());
         envio.setNomeBanco(configuracoes.getNomeBancoDeDados());
         envio.setUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
@@ -220,7 +220,7 @@ public class ParcialController extends DatabaseManager {
      * @throws SQLException
      * @throws JSONException
      */
-    public void restParcialImpre(Date date) throws SQLException, JSONException, Exception {
+    public void restParcialDiariaImpre(Date dataInicio, Date dataFim) throws SQLException, JSONException, Exception {
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         Usuario usuario = usuarioController.getUsuarioLogado();
         EnvioConsumo envio = new EnvioConsumo();
@@ -242,9 +242,84 @@ public class ParcialController extends DatabaseManager {
         envio.setValorDes(0);
         envio.setComissao(0);
         envio.setStatus("IMPRE");
+        envio.setOrigem("IMPPVDIA");
+        envio.setIp(configuracoes.getIp());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String dataInicioStr = sdf.format(dataInicio);
+        String dataFimStr = sdf.format(dataFim);
+        envio.setDataInicio(dataInicioStr);
+        envio.setDataFim(dataFimStr);
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
+        Call<Retorno> call = request.requestImprimirParcial(envio);
+        Retorno retorno = call.execute().body();
+        if (!retorno.isOperacaoFinalizada()) throw new Exception(retorno.getMensagem());
+    }
+
+
+    public void restParcialIndividualImpre(String numPed) throws SQLException, JSONException, Exception {
+        Configuracoes configuracoes = configuracoesController.getConfiguracoes();
+        Usuario usuario = usuarioController.getUsuarioLogado();
+        EnvioConsumo envio = new EnvioConsumo();
+        envio.setIpBanco(configuracoes.getIpBancoDeDados());
+        envio.setNomeBanco(configuracoes.getNomeBancoDeDados());
+        envio.setCodigoUsuario(usuario.getCodigo());
+        envio.setNomeUsuario(usuario.getNome());
+        envio.setEquipamento(getCodigo(configuracoes.getEquipamento(), 5));
+        envio.setCodigoEmpresa(getCodigo(configuracoes.getEmpresa(), 2));
+        envio.setCodigoLoja(getCodigo(configuracoes.getLoja(), 5));
+        envio.setCodigoUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
+        envio.setMesa("00000");
+        envio.setCartao("0000000000");
+        envio.setValorTotal(0);
+        envio.setUnidaeSolicitante(getCodigo(configuracoes.getUnidadeAdm(), 2));
+        envio.setListItemConsumos(new ArrayList<EnvioItemConsumo>());
+        envio.setTipoConsumo("V");
+        envio.setPraza(0);
+        envio.setValorDes(0);
+        envio.setNumPed(numPed);
+        envio.setComissao(0);
+        envio.setStatus("IMPRE");
         envio.setOrigem("IMPPV");
         envio.setIp(configuracoes.getIp());
-        envio.setDate(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Request request = RequestClient.getRequest(configuracoes.getIpWebService());
+        Call<Retorno> call = request.requestImprimirParcial(envio);
+        Retorno retorno = call.execute().body();
+        if (!retorno.isOperacaoFinalizada()) throw new Exception(retorno.getMensagem());
+    }
+
+    public void restParcialAcumuladoImpre(Date dataInicio, Date dataFim) throws SQLException, JSONException, Exception {
+        Configuracoes configuracoes = configuracoesController.getConfiguracoes();
+        Usuario usuario = usuarioController.getUsuarioLogado();
+        EnvioConsumo envio = new EnvioConsumo();
+        envio.setIpBanco(configuracoes.getIpBancoDeDados());
+        envio.setNomeBanco(configuracoes.getNomeBancoDeDados());
+        envio.setCodigoUsuario(usuario.getCodigo());
+        envio.setNomeUsuario(usuario.getNome());
+        envio.setEquipamento(getCodigo(configuracoes.getEquipamento(), 5));
+        envio.setCodigoEmpresa(getCodigo(configuracoes.getEmpresa(), 2));
+        envio.setCodigoLoja(getCodigo(configuracoes.getLoja(), 5));
+        envio.setCodigoUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
+        envio.setMesa("00000");
+        envio.setCartao("0000000000");
+        envio.setValorTotal(0);
+        envio.setUnidaeSolicitante(getCodigo(configuracoes.getUnidadeAdm(), 2));
+        envio.setListItemConsumos(new ArrayList<EnvioItemConsumo>());
+        envio.setTipoConsumo("V");
+        envio.setPraza(0);
+        envio.setValorDes(0);
+        envio.setComissao(0);
+        envio.setStatus("IMPRE");
+        envio.setOrigem("IMPPVACC");
+        envio.setIp(configuracoes.getIp());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String dataInicioStr = sdf.format(dataInicio);
+        String dataFimStr = sdf.format(dataFim);
+        envio.setDataInicio(dataInicioStr);
+        envio.setDataFim(dataFimStr);
         Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<Retorno> call = request.requestImprimirParcial(envio);
         Retorno retorno = call.execute().body();

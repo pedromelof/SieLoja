@@ -23,10 +23,12 @@ public class EnvioConsumo extends Envio{
     private String status;
     private String origem;
     private String ip;
-    private Date date;
+    private String dataInicio;
+    private String dataFim;
     private String codCliente;
     private String forpag;
     private String tippag;
+    private String numPed;
 
     public EnvioConsumo() {
         super();
@@ -38,7 +40,7 @@ public class EnvioConsumo extends Envio{
                         List<EnvioItemConsumo> listItemConsumos, String tipoConsumo,
                         int praza, int valorDes, int comissao, String status,
                         String origem, String ip, Date date, String codCliente,
-                        String ipBanco, String nomeBanco, String forpag, String tippag) {
+                        String ipBanco, String nomeBanco) {
         super(ipBanco, nomeBanco);
         this.codigoUsuario = codigoUsuario;
         this.nomeUsuario = nomeUsuario;
@@ -58,7 +60,8 @@ public class EnvioConsumo extends Envio{
         this.status = status;
         this.origem = origem;
         this.ip = ip;
-        this.date = date;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.codCliente = codCliente;
         this.forpag = forpag;
         this.tippag = tippag;
@@ -78,6 +81,9 @@ public class EnvioConsumo extends Envio{
 
     public void setForpag(String forpag) {
         this.forpag = forpag;
+    }
+    public void setNumPed(String numPed) {
+        this.numPed = numPed;
     }
 
     public String getCodigoUsuario() {
@@ -188,11 +194,17 @@ public class EnvioConsumo extends Envio{
     public void setIp(String ip) {
         this.ip = ip;
     }
-    public Date getDate() {
-        return date;
+    public String getDataInicio() {
+        return dataInicio;
     }
-    public void setDate(Date date) {
-        this.date = date;
+    public String getDataFim() {
+        return dataFim;
+    }
+    public void setDataInicio(String dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+    public void setDataFim(String dataFim) {
+        this.dataFim = dataFim;
     }
     public String getCodCliente() {
         return codCliente;

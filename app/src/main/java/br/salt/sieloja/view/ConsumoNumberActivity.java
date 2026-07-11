@@ -1,14 +1,17 @@
 package br.salt.sieloja.view;
 
+import static br.salt.sieloja.view.util.Alert.dialogValidation;
+
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
@@ -35,7 +38,6 @@ import br.salt.sieloja.controller.ConsumoController;
 import br.salt.sieloja.controller.ItemController;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.databinding.ActivityConsumoNumberBinding;
-import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
@@ -52,6 +54,8 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
     private Consumo consumo;
     private Usuario usuario;
     private Item item;
+
+    private String numPed;
 
 
     @Override
@@ -265,7 +269,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             try {
                 if(consumoController.getAllItemConsumo().size() > 0){
                     parcialController.transformarConsumoEmParcial();
-                    Intent intent = new Intent(this, ParcialActivity.class);
+                    Intent intent = new Intent(this, ParcialAcumuladoActivity.class);
                     startActivity(intent);
                     runOnUiThread(() -> stopProgress());
                 } else {
@@ -335,13 +339,22 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
                 consumo.setCodFormaPag(codForma);
                 consumo.setCodTipoPag(codTipo);
                 if (configuracoes.isAlteraData()) {
-                    consumoController.restConsumo(consumo, usuario, calendar.getTime());
+                    consumoController.restConsumo(consumo, usuario, calendar.getTime(), calendar.getTime());
                 } else {
-                    consumoController.restConsumo(consumo, usuario, null);
+                    consumoController.restConsumo(consumo, usuario, null, null);
                 }
                 runOnUiThread(() -> {
                     limparTela();
-                    stopProgress(getString(R.string.venda_finalizada));
+                    stopProgress();
+                    dialogValidation(this, "Venda finalizada com sucesso!\nDeseja imprimir a parcial?",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(ConsumoNumberActivity.this, ParcialIndividualActivity.class);
+                                    intent.putExtra("numPed", numPed);
+                                    startActivity(intent);
+                                }
+                            });
                 });
             } catch (JSONException | SQLException e) {
                 runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));

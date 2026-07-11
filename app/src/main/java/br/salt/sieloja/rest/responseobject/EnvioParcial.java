@@ -1,10 +1,13 @@
 package br.salt.sieloja.rest.responseobject;
 
+import java.util.Date;
+
 public class EnvioParcial extends Envio {
 
     private String mesa;
     private String cartao;
-    private String data;
+    private String dataInicio;
+    private String dataFim;
     private String unidade;
 
     public EnvioParcial() {
@@ -15,7 +18,8 @@ public class EnvioParcial extends Envio {
         super(ipBanco, nomeBanco);
         this.mesa = mesa;
         this.cartao = cartao;
-        this.data = data;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.unidade = unidade;
     }
     public String getMesa() {
@@ -30,11 +34,17 @@ public class EnvioParcial extends Envio {
     public void setCartao(String cartao) {
         this.cartao = cartao;
     }
-    public String getData() {
-        return data;
+    public String getDataInicio() {
+        return dataInicio;
     }
-    public void setData(String data) {
-        this.data = data;
+    public String getDataFim() {
+        return dataFim;
+    }
+    public void setDataInicio(String dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+    public void setDataFim(String dataFim) {
+        this.dataFim = dataFim;
     }
     public String getUnidade() {
         return unidade;

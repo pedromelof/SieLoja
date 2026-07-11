@@ -125,8 +125,9 @@ public class BaseActivity extends FragmentActivity {
 
     protected void stopProgress(String mensagem) {
         runOnUiThread(() -> {
-            progressDialog.hide();
-            Alert.dialog(this, mensagem);
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         });
     }
 

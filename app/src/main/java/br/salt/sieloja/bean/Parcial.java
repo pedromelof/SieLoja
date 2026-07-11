@@ -50,6 +50,12 @@ public class Parcial {
     private double qtd;
 
     @DatabaseField
+    private String tipPag;
+
+    @DatabaseField
+    private String forPag;
+
+    @DatabaseField
     private double comissao;
 
     public Parcial() {
@@ -57,7 +63,8 @@ public class Parcial {
     }
 
     public Parcial(String codItem, String decItem, String comItem,
-                   double valor, double qtd, double comissao) {
+                   double valor, double qtd, double comissao,
+                   String tipPag, String forPag) {
         super();
         this.numPed = null;
         this.codVen = null;
@@ -69,10 +76,13 @@ public class Parcial {
         this.valor = valor;
         this.qtd = qtd;
         this.comissao = comissao;
+        this.tipPag = tipPag;
+        this.forPag = forPag;
     }
 
     public Parcial(String numPed, String codVen, String status, String mesa, String cartao, String codItem,
-                       String decItem, String comItem, String nomcli, String unidade, double valor, double qtd, double comissao) {
+                       String decItem, String comItem, String nomcli, String unidade, double valor, double qtd, double comissao,
+                   String tipPag, String forPag) {
         this.numPed = numPed;
         this.codVen = codVen;
         this.status = status;
@@ -86,6 +96,8 @@ public class Parcial {
         this.comissao = comissao;
         this.nomcli = nomcli;
         this.unidade = unidade;
+        this.tipPag = tipPag;
+        this.forPag = forPag;
     }
 
     public String getUnidade() { return unidade; }
@@ -152,6 +164,7 @@ public class Parcial {
         this.codItem = codItem;
     }
 
+
     public String getDecItem() {
         return decItem;
     }
@@ -200,6 +213,19 @@ public class Parcial {
 
     public double getComissao() {
         return comissao;
+    }
+
+    public String getTipPag() {
+        return tipPag;
+    }
+    public void setTipPag(String tipPag) {
+        this.tipPag = tipPag;
+    }
+    public String getForPag() {
+        return forPag;
+    }
+    public void setForPag(String forPag) {
+        this.tipPag = forPag;
     }
 
     public String toString(){

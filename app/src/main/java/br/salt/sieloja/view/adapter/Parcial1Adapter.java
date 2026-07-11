@@ -59,7 +59,11 @@ public class Parcial1Adapter extends BaseAdapter {
         }
 
 
-        parcialItem.bind(parcial.get(position));
+        try {
+            parcialItem.bind(parcial.get(position));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return parcialItem;
     }
 }

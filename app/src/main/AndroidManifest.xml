@@ -45,9 +45,24 @@
             android:label="@string/title_activity_consumo" >
         </activity>
         <activity
-            android:name="br.salt.sieloja.view.ParcialActivity"
+            android:name="br.salt.sieloja.view.ParcialAcumuladoActivity"
             android:screenOrientation="fullSensor"
             android:label="@string/title_activity_parcial" >
+        </activity>
+        <activity
+            android:name="br.salt.sieloja.view.ParcialDiarioActivity"
+            android:screenOrientation="fullSensor"
+            android:label="@string/title_activity_parcial" >
+        </activity>
+        <activity
+            android:name="br.salt.sieloja.view.ParcialIndividualActivity"
+            android:screenOrientation="fullSensor"
+            android:label="@string/title_activity_parcial" >
+        </activity>
+        <activity
+            android:name="br.salt.sieloja.view.PagamentoActivity"
+            android:screenOrientation="fullSensor"
+            android:label="Tela de Pagamento" >
         </activity>
         <activity
             android:name="br.salt.sieloja.view.MenuActivity"

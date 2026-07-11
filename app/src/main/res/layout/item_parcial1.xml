@@ -3,120 +3,235 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background" >
+    android:background="@color/background">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
 
-        <TextView
-            android:id="@+id/textCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="Nome do Cliente"
-            android:textColor="@color/text_color" />
+        <View
+            android:id="@+id/separador1"
+            
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#59000000" />
 
-        <TextView
-            android:id="@+id/textPedido"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/layoutCabln1"
+            
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textCliente"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="@string/total_de_itens"
-            android:textColor="@color/text_color" />
+            android:layout_below="@+id/separador1"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textStatus"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PEDIDO : "
+                    android:typeface="monospace" />
+
+                <TextView
+                    android:id="@+id/valCodPed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXXX"
+                    android:typeface="monospace" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/valNomeCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="NOME DO CLIENTE"
+                android:typeface="monospace" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layoutCabln2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textCliente"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="FECHADO"
-            android:textColor="@color/text_color" />
+            
+            android:layout_below="@+id/layoutCabln1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="F.PAGTO : "
+                    android:typeface="monospace" />
+
+                <TextView
+                    android:id="@+id/valForPag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXX"
+                    android:typeface="monospace" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="T.PAGTO : "
+                    android:typeface="monospace" />
+
+                <TextView
+                    android:id="@+id/valTipPag"
+                    android:layout_width="match_parent"
+                    android:gravity="end"
+                    android:layout_height="wrap_content"
+                    android:text="XXXXXX"
+                    android:typeface="monospace" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separador3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            
+            android:layout_below="@+id/layoutCabln2"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#59000000" />
+
+        <LinearLayout
+            android:id="@+id/cabItens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/separador3"
+            
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="COD"
+                android:typeface="monospace" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="PRODUTO"
+                android:typeface="monospace" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="QTD"
+                android:gravity="center"
+                android:typeface="monospace" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="VALOR"
+                android:gravity="end"
+                android:typeface="monospace" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separador4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            
+            android:layout_below="@+id/cabItens"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#59000000" />
 
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textPedido"
-            android:layout_marginTop="@dimen/margin_10"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/separador4"
+            tools:listitem="@layout/item_parcial"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@null" >
-        </ListView>
+            android:divider="@null"/>
 
-        <TextView
-            android:id="@+id/textValBru"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+        <View
+            android:id="@+id/separador2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
             android:layout_below="@+id/listView"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="Bruto"
-            android:textColor="@color/text_color" />
+            
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#59000000" />
 
-        <TextView
-            android:id="@+id/textBruto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/listView"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="R$ 000,00"
-            android:textColor="@color/text_color" />
 
-        <TextView
-            android:id="@+id/textValTax"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
+            android:layout_below="@+id/separador2"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textValBru"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="Taxa"
-            android:textColor="@color/text_color" />
+            android:background="@color/background"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textTaxa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textBruto"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="R$ 000,00"
-            android:textColor="@color/text_color" />
+            <TextView
+                android:id="@+id/textValBru"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/valQtdItens"
+                android:text="TOTAL :"
+                android:layout_marginRight="@dimen/margin_05"
+                android:maxLines="1"
+                android:textColor="@color/text_color"
+                android:typeface="monospace"
+                />
 
-        <TextView
-            android:id="@+id/textValLiq"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textValTax"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="Liquido"
-            android:textColor="@color/text_color" />
+            <TextView
+                android:id="@+id/valQtdItens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/valTotal"
+                android:text="@string/total_quantidade"
+                android:textColor="@color/text_color"
+                android:gravity="right"
+                android:width="40dp"
+                android:typeface="monospace" />
 
-        <TextView
-            android:id="@+id/textLiquido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textTaxa"
-            android:layout_marginRight="@dimen/margin_15"
-            android:layout_marginTop="@dimen/margin_05"
-            android:text="R$ 000,00"
-            android:textColor="@color/text_color" />
+            <TextView
+                android:id="@+id/valTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="R$ 123"
+                android:gravity="right"
+                android:textColor="@color/text_color"
+                android:width="100dp"
+                android:typeface="monospace" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 </ScrollView>

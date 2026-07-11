@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "br.salt.sieloja"
-        minSdk 23
+        minSdk 26
         targetSdk 35
         multiDexEnabled true
         versionCode 40102

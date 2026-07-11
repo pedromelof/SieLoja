@@ -27,7 +27,7 @@ public class RequestClient {
         }
 
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
 
         return new Retrofit.Builder()

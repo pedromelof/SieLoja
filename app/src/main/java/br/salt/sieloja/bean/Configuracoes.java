@@ -49,7 +49,7 @@ public class Configuracoes {
         super();
     }
 
-    public Configuracoes(String empresa, String loja, String unidadeAdm,
+    public Configuracoes(String empresa, String unidadeAdm, String loja,
                          String equipamento, String ipWebService, String ipBancoDeDados,
                          String nomeBancoDeDados, String nomeSeguranca, String ip,
                          int tipo, String typeKey, boolean alteraData) {

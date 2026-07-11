@@ -7,9 +7,11 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import org.json.JSONException;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Consumo;
@@ -165,7 +167,7 @@ public class ConsumoController extends DatabaseManager {
         return totalConsumo;
     }
 
-    public void restConsumo(Consumo consumo, Usuario usuario, Date date) throws JSONException, SQLException, Exception{
+    public void restConsumo(Consumo consumo, Usuario usuario, Date dataInicio, Date dataFim) throws JSONException, SQLException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         EnvioConsumo envio = new EnvioConsumo();
         envio.setIpBanco(configuracoes.getIpBancoDeDados());
@@ -191,7 +193,12 @@ public class ConsumoController extends DatabaseManager {
         envio.setForpag(consumo.getCodFormaPag());
         envio.setTippag(consumo.getCodTipoPag());
         envio.setIp(configuracoes.getIp());
-        envio.setDate(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String dataInicioStr = sdf.format(dataInicio);
+        String dataFimStr = sdf.format(dataFim);
+        envio.setDataInicio(dataInicioStr);
+        envio.setDataFim(dataFimStr);
         
         Request request = RequestClient.getRequest(configuracoes.getIpWebService());
         Call<Retorno> call = request.requestVenda(envio);

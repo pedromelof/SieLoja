@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:weightSum="3"
+            android:weightSum="4"
             android:layout_marginRight="1dp"
             android:orientation="vertical" >
 
@@ -34,6 +34,14 @@
                 style="@style/button_menu"
                 android:layout_marginBottom="1dp"
                 android:text="@string/venda" />
+            <Button
+                android:id="@+id/button_pagamento"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@mipmap/ic_menu_pagamentos"
+                style="@style/button_menu"
+                android:layout_marginBottom="1dp"
+                android:text="@string/pagamento" />
 
             <Button
                 android:id="@+id/button_cardapio"

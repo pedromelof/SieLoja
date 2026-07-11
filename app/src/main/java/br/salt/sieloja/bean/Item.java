@@ -44,12 +44,16 @@ public class Item {
 
     @DatabaseField
     private int qtdMaxInsumo;
+    @DatabaseField
+    private String tipPag;
+    @DatabaseField
+    private String forPag;
 
     public Item() {
         super();
     }
 
-    public Item(String codigo, String nome, String descricao,
+    public Item(String codigo, String nome, String descricao, String tipPag, String forPag,
                 String codigoGrupo, String codigoSubgrupo, double preco,
                 String imagem,String unidade, double comicao) {
         super();
@@ -60,6 +64,8 @@ public class Item {
         this.codigoSubgrupo = codigoSubgrupo;
         this.preco = preco;
         this.imagem = imagem;
+        this.tipPag = tipPag;
+        this.forPag = forPag;
         this.unidade = unidade;
         this.comicao = comicao;
     }
@@ -166,6 +172,23 @@ public class Item {
 
     public void setComicao(double comicao) {
         this.comicao = comicao;
+    }
+
+
+    public String getTipPag() {
+        return tipPag;
+    }
+
+    public void setTipPag(String tipPag) {
+        this.tipPag = tipPag;
+    }
+
+    public String getForPag() {
+        return tipPag;
+    }
+
+    public void setForPag(String forPag) {
+        this.forPag = forPag;
     }
 
     /**

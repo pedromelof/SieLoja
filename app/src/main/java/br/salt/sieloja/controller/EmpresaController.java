@@ -1,12 +1,12 @@
 package br.salt.sieloja.controller;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import com.j256.ormlite.stmt.DeleteBuilder;
-
-
-
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 
 import org.json.JSONException;
@@ -15,9 +15,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.salt.sieloja.bean.Cliente;
 import br.salt.sieloja.bean.Configuracoes;
 import br.salt.sieloja.bean.Empresa;
 
+import br.salt.sieloja.bean.Item;
 import br.salt.sieloja.dao.DatabaseManager;
 import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.rest.RequestClient;
@@ -82,6 +84,18 @@ public class EmpresaController extends DatabaseManager {
             }
         }
         return codeUnidade;
+    }
+
+    public Empresa getEmpresa(String codEmpresa) throws SQLException {
+        Empresa result = null;
+        try {
+            QueryBuilder<Empresa, Integer> query = getHelper().getEmpresaDao().queryBuilder();
+            query.where().eq("codEmpresa", codEmpresa);
+            result = query.queryForFirst();
+        } catch (SQLException e) {
+            Log.d("Erro no SQL", e.getMessage());
+        }
+        return result;
     }
 
     /**

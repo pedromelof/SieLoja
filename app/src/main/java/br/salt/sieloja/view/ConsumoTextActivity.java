@@ -1,28 +1,18 @@
 package br.salt.sieloja.view;
 
+import static br.salt.sieloja.view.util.Alert.dialogValidation;
+
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
-
-
-
-
-
-
-
 
 
 import org.json.JSONException;
@@ -48,7 +38,6 @@ import br.salt.sieloja.controller.ConsumoController;
 import br.salt.sieloja.controller.ItemController;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.databinding.ActivityConsumoTextBinding;
-import br.salt.sieloja.rest.Request;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
@@ -66,6 +55,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
     private Consumo consumo;
     private Usuario usuario;
     private Item item;
+    private String numPed;
 
 
     @Override
@@ -265,7 +255,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
     }
 
     public void button_cancelar(){
-        Alert.dialogValidation(this, getString(R.string.confirmar_cancelamento_venda), onClickListener);
+        dialogValidation(this, getString(R.string.confirmar_cancelamento_venda), onClickListener);
     }
 
     public void button_parcial(){
@@ -278,7 +268,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
             try {
                 if(consumoController.getAllItemConsumo().size() > 0){
                     parcialController.transformarConsumoEmParcial();
-                    Intent intent = new Intent(this, ParcialActivity.class);
+                    Intent intent = new Intent(this, ParcialAcumuladoActivity.class);
                     intent.putExtra("data", calendar.getTime());
                     startActivity(intent);
                     runOnUiThread(() -> stopProgress());
@@ -336,7 +326,6 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
     }
 
     public void finalizarConsumo(){
-        // ALTERADO: Implementação via Thread.
         new Thread(() -> {
             runOnUiThread(() -> startProgress());
             try {
@@ -350,13 +339,22 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
                 consumo.setCodFormaPag(codForma);
                 consumo.setCodTipoPag(codTipo);
                 if (configuracoes.isAlteraData()) {
-                    consumoController.restConsumo(consumo, usuario, calendar.getTime());
+                    consumoController.restConsumo(consumo, usuario, calendar.getTime(), calendar.getTime());
                 } else {
-                    consumoController.restConsumo(consumo, usuario, null);
+                    consumoController.restConsumo(consumo, usuario, null, null);
                 }
                 runOnUiThread(() -> {
                     limparTela();
-                    stopProgress(getString(R.string.venda_finalizada));
+                    stopProgress();
+                    dialogValidation(this, "Venda finalizada com sucesso!\nDeseja imprimir a parcial?",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(ConsumoTextActivity.this, ParcialIndividualActivity.class);
+                                    intent.putExtra("numPed", numPed);
+                                    startActivity(intent);
+                                }
+                            });
                 });
             } catch (JSONException | SQLException e) {
                 runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));

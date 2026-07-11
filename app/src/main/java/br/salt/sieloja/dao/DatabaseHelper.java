@@ -149,8 +149,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private void setup() throws SQLException {
         Configuracoes configuracoes = new Configuracoes("01", "00001", "01", "01",
-                "http://192.168.1.114:8080/Des_SieWS/", "192.168.1.2:5433", "p_sie_biolux",
-                "p_seg", "0.0.0.0", 2, Configuracoes.TYPE_KEY_NUMBER, true);
+                "", "", "",
+                "", "0.0.0.0", 2, Configuracoes.TYPE_KEY_NUMBER, true);
         /*Configuracoes configuracoes = new Configuracoes("01", "00001", "01", "01",
                 "http:/saltinfo.no-ip.com:7782/Des_SieWS/", "192.168.1.2:5432", "p_sie_jeri_filial", "p_seg_jeriarte",
                 "0.0.0.0", 2, Configuracoes.TYPE_KEY_NUMBER, true);*/
