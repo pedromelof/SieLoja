@@ -37,7 +37,7 @@
     <string name="erro_no_json">Erro no JSON. </string>
     <string name="erro_no_sql">Erro no SQL. </string>
     <string name="erro_procurar_administrador">Erro, procurar administrador. </string>
-    <string name="nenhuma_venda_foi_encontrado">Nenhuma venda foi encontrado.</string>
+    <string name="nenhuma_venda_foi_encontrado">Nenhuma venda foi encontrada.</string>
     <string name="nenhum_item_foi_lancado">Nenhum item foi lançado.</string>
     <string name="acesso_restrito_entre_em_contato_com_o_administrador">Acesso restrito. Entre em contato com o administrador.</string>
     <string name="email_enviado_com_sucesso">E-mail enviado com suscesso</string>

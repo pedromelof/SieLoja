@@ -13,7 +13,7 @@ public class RetornoUsuario extends Retorno{
     }
 
     public RetornoUsuario(boolean operacaoFinalizada, String mensagem, List<Usuario> usuarios) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.usuarios = usuarios;
     }
 

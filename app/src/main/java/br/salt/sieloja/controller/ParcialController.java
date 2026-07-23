@@ -216,6 +216,38 @@ public class ParcialController extends DatabaseManager {
         }
     }
 
+    public void restParcialIndividual(String numPed) throws SQLException, JSONException, Exception {
+        List<Parcial> parciais = null;
+        Integer contador = 0;
+
+        while (parciais == null || parciais.isEmpty()) {
+            if (contador == 5) break;
+            Configuracoes configuracoes = configuracoesController.getConfiguracoes();
+            Usuario usuario = usuarioController.getUsuarioLogado();
+            EnvioParcial envio = new EnvioParcial();
+            envio.setIpBanco(configuracoes.getIpBancoDeDados());
+            envio.setNomeBanco(configuracoes.getNomeBancoDeDados());
+            envio.setUnidade(getCodigo(configuracoes.getUnidadeAdm(), 2));
+            envio.setCartao(usuario.getCodigo());
+            Request request = RequestClient.getRequest(configuracoes.getIpWebService());
+            Call<RetornoParcial> call = request.requestParcialIndividual(numPed, envio);
+            RetornoParcial retorno = call.execute().body();
+            if (retorno.isOperacaoFinalizada()) {
+                DeleteBuilder<Parcial, Integer> deleteBuilder = getHelper().getParcialDao().deleteBuilder();
+                deleteBuilder.delete();
+                parciais = retorno.getParcial();
+                for (Parcial parcial : parciais) {
+                    getHelper().getParcialDao().createOrUpdate(parcial);
+                }
+                if (!parciais.isEmpty()) break;
+            } else {
+                throw new Exception(retorno.getMensagem());
+            }
+            contador++;
+            Thread.sleep(5000);
+        }
+    }
+
     /**
      * @throws SQLException
      * @throws JSONException

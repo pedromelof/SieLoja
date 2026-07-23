@@ -1,5 +1,6 @@
 package br.salt.sieloja.view;
 
+import static br.salt.sieloja.view.util.Alert.dialog;
 import static br.salt.sieloja.view.util.Alert.dialogValidation;
 
 import android.app.AlertDialog;
@@ -38,6 +39,7 @@ import br.salt.sieloja.controller.ConsumoController;
 import br.salt.sieloja.controller.ItemController;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.databinding.ActivityConsumoNumberBinding;
+import br.salt.sieloja.rest.responseobject.Retorno;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
@@ -54,7 +56,6 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
     private Consumo consumo;
     private Usuario usuario;
     private Item item;
-
     private String numPed;
 
 
@@ -98,12 +99,12 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             usuario = usuarioController.getUsuarioLogado();
             consumo = consumoController.getConsumoAberto();
             configuracoes = configuracoesController.getConfiguracoes();
-            if(consumo == null){
+            if (consumo == null) {
                 consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "00000", "00001", "00001");
                 consumoController.salvarConsumo(consumo);
             }
 
-            if(Integer.parseInt(usuario.getNivelDeAcesso()) < 22){
+            if (Integer.parseInt(usuario.getNivelDeAcesso()) < 22) {
                 binding.btnValor.setEnabled(false);
             }
 
@@ -114,7 +115,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             binding.spinnerFormaP.setSelection(getIdItemArray(formaPag, fp.getDesfpg()));
             binding.spinnerTipoP.setSelection(getIdItemArray(tipoPag, tp.getDestpg()));
 
-            if(configuracoes.isAlteraData()){
+            if (configuracoes.isAlteraData()) {
                 calendar.setTime(consumo.getDate());
             }
 
@@ -129,7 +130,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             binding.btnItem.setOnItemClickListener((parent, view, position, id) -> {
                 try {
                     item = itemController.getItemFilterToString(adapterList.getItem(position));
-                    DecimalFormat form  = new DecimalFormat("#####0.00");
+                    DecimalFormat form = new DecimalFormat("#####0.00");
                     String preco = String.valueOf(form.format(item.getPreco()));
                     preco = preco.replace(",", ".");
                     binding.btnValor.setText(preco);
@@ -146,9 +147,9 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             binding.buttonParcial.setOnClickListener(v -> button_parcial());
         } catch (SQLException e) {
             e.printStackTrace();
-            Alert.dialog(this, getString(R.string.erro_no_sql));
+            dialog(this, getString(R.string.erro_no_sql));
         } catch (Exception e) {
-            Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+            dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -167,13 +168,13 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
     };
 
-    public void fecharConsumo(){
+    public void fecharConsumo() {
         limparTela();
-        Alert.dialog(this, getString(R.string.venda_cancelado_com_sucesso));
+        dialog(this, getString(R.string.venda_cancelado_com_sucesso));
     }
 
-    public void btn_data(){
-        if(configuracoes.isAlteraData()){
+    public void btn_data() {
+        if (configuracoes.isAlteraData()) {
             View view;
             view = (View) LayoutInflater.from(this).inflate(R.layout.dialog_data, null);
             datePicker = (DatePicker) view.findViewById(R.id.datePicker);
@@ -182,26 +183,26 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
     }
 
-    public void btn_add(){
+    public void btn_add() {
         String quantidade = binding.btnQtd.getText().toString();
-        if(item == null){
-            Alert.dialog(this, getString(R.string.informe_item));
-        } else if(quantidade.equalsIgnoreCase("")){
-            Alert.dialog(this, getString(R.string.quantidade_maior_que_zero));
+        if (item == null) {
+            dialog(this, getString(R.string.informe_item));
+        } else if (quantidade.equalsIgnoreCase("")) {
+            dialog(this, getString(R.string.quantidade_maior_que_zero));
         } else {
             try {
                 this.codBarra = codBarraController.getListCodBarra(item.getCodigo());
                 String[] cb = codBarraController.getListCodBarra(codBarra);
-                if(codBarra.size() > 1){
+                if (codBarra.size() > 1) {
                     Alert.dialogListItems(this, onClickListenerCodBarra, cb);
                 } else {
                     addItem(-1);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                Alert.dialog(this, getString(R.string.erro_no_sql));
+                dialog(this, getString(R.string.erro_no_sql));
             } catch (Exception e) {
-                Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+                dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -222,7 +223,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             double qtd = Double.parseDouble(quantidade);
             double valor = Double.parseDouble(txt_valor);
             ItemConsumo itemConsumo;
-            if (which == -1){
+            if (which == -1) {
                 itemConsumo = new ItemConsumo(consumo, item.getCodigo(), qtd, "", "", 0, valor);
             } else {
                 CodBarra cb = codBarra.get(which);
@@ -237,37 +238,38 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             binding.btnItem.requestFocus();
         } catch (SQLException e) {
             e.printStackTrace();
-            Alert.dialog(this, getString(R.string.erro_no_sql));
+            dialog(this, getString(R.string.erro_no_sql));
         } catch (Exception e) {
-            Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+            dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void button_finalizar(){
-        if(validaCampos()){
+    public void button_finalizar() {
+        if (validaCampos()) {
             try {
                 finalizarConsumo();
             } catch (Exception e) {
-                Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+                dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
-    public void button_cancelar(){
+    public void button_cancelar() {
         Alert.dialogValidation(this, getString(R.string.confirmar_cancelamento_venda), onClickListener);
     }
 
-    public void button_parcial(){
-        parcial();
+    public void button_parcial() {
+//        parcial();
+        executarImpressao(numPed);
     }
 
-    public void parcial(){
+    public void parcial() {
         new Thread(() -> {
             runOnUiThread(() -> startProgress());
             try {
-                if(consumoController.getAllItemConsumo().size() > 0){
+                if (consumoController.getAllItemConsumo().size() > 0) {
                     parcialController.transformarConsumoEmParcial();
                     Intent intent = new Intent(this, ParcialAcumuladoActivity.class);
                     startActivity(intent);
@@ -285,28 +287,28 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }).start();
     }
 
-    public boolean validaCampos(){
+    public boolean validaCampos() {
         boolean valida = false;
         try {
             Configuracoes configuracoes = configuracoesController.getConfiguracoes();
-            if(!consumoController.isValidationItensLancados()){
-                Alert.dialog(this, getString(R.string.item_lansado_incorretamente));
-            }else if(adapter.getCount() < 1){
-                Alert.dialog(this, getString(R.string.item_lansado_incorretamente));
-            } else if(isConnectedInternet(this) && isConnectedWS(configuracoes.getIpWebService())){
+            if (!consumoController.isValidationItensLancados()) {
+                dialog(this, getString(R.string.item_lansado_incorretamente));
+            } else if (adapter.getCount() < 1) {
+                dialog(this, getString(R.string.item_lansado_incorretamente));
+            } else if (isConnectedInternet(this) && isConnectedWS(configuracoes.getIpWebService())) {
                 valida = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            Alert.dialog(this, getString(R.string.erro_no_sql));
+            dialog(this, getString(R.string.erro_no_sql));
         } catch (Exception e) {
-            Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+            dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
             e.printStackTrace();
         }
         return valida;
     }
 
-    public void limparTela(){
+    public void limparTela() {
         try {
             consumoController.deletarAll();
             consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "", "", "");
@@ -318,14 +320,14 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             binding.btnValor.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
-            Alert.dialog(this, getString(R.string.erro_no_sql));
+            dialog(this, getString(R.string.erro_no_sql));
         } catch (Exception e) {
-            Alert.dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
+            dialog(this, getString(R.string.erro_procurar_administrador) + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void finalizarConsumo(){
+    public void finalizarConsumo() {
         new Thread(() -> {
             runOnUiThread(() -> startProgress());
             try {
@@ -338,11 +340,15 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
                 consumo.setCodCliente(codCliente);
                 consumo.setCodFormaPag(codForma);
                 consumo.setCodTipoPag(codTipo);
+
+                Retorno retorno;
                 if (configuracoes.isAlteraData()) {
-                    consumoController.restConsumo(consumo, usuario, calendar.getTime(), calendar.getTime());
+                    retorno = consumoController.restConsumo(consumo, usuario, calendar.getTime(), calendar.getTime());
                 } else {
-                    consumoController.restConsumo(consumo, usuario, null, null);
+                    retorno = consumoController.restConsumo(consumo, usuario, null, null);
                 }
+                numPed = retorno.getNumPed();
+
                 runOnUiThread(() -> {
                     limparTela();
                     stopProgress();
@@ -350,11 +356,10 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(ConsumoNumberActivity.this, ParcialIndividualActivity.class);
-                                    intent.putExtra("numPed", numPed);
-                                    startActivity(intent);
+                                    executarImpressao(numPed);
                                 }
                             });
+
                 });
             } catch (JSONException | SQLException e) {
                 runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));
@@ -362,6 +367,44 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             } catch (Exception e) {
                 runOnUiThread(() -> stopProgress(getString(R.string.erro_procurar_administrador) + e.getMessage()));
                 e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void executarImpressao(String pNumPed) {
+        new Thread(() -> {
+            if (pNumPed == "" || pNumPed == null) {
+                runOnUiThread(() -> {
+                    dialog(this, getString(R.string.nenhuma_venda_foi_encontrado),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                });
+            }
+
+            runOnUiThread(() -> startProgress());
+            try {
+                parcialController.restParcialIndividual(numPed);
+                if (parcialController.isVerificaSeExisteParcial()) {
+                    Intent intent = new Intent(ConsumoNumberActivity.this, ParcialIndividualActivity.class);
+                    intent.putExtra("numPed", numPed);
+                    startActivity(intent);
+                    runOnUiThread(() -> stopProgress());
+                } else {
+                    stopProgress(getString(R.string.nenhuma_venda_foi_encontrado));
+                    runOnUiThread(() -> {
+                        dialog(this, getString(R.string.nenhuma_venda_foi_encontrado),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                    });
+                }
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress("Erro: " + e.getMessage()));
             }
         }).start();
     }
@@ -379,7 +422,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
         }
 
         ViewGroup.LayoutParams params = binding.listView.getLayoutParams();
-        params.height = totalHeight + (binding.listView.getDividerHeight())	* (adapter.getCount() - 1);
+        params.height = totalHeight + (binding.listView.getDividerHeight()) * (adapter.getCount() - 1);
         binding.listView.setLayoutParams(params);
         binding.listView.requestLayout();
 
@@ -387,12 +430,12 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             double total = consumoController.getTotal();
             binding.btnTotal.setText(String.format("R$ %.2f", total));
         } catch (SQLException e) {
-            Alert.dialog(this, getString(R.string.erro_no_sql));
+            dialog(this, getString(R.string.erro_no_sql));
             e.printStackTrace();
         }
     }
 
-    public void data(){
+    public void data() {
         try {
             int day = datePicker.getDayOfMonth();
             int month = datePicker.getMonth();
@@ -403,7 +446,7 @@ public class ConsumoNumberActivity extends BaseActivity implements ConsumoActivi
             binding.btnData.setText(dateFormat.format(consumo.getDate()));
             consumoController.salvarConsumo(consumo);
         } catch (SQLException e) {
-            Alert.dialog(this, getString(R.string.erro_no_sql));
+            dialog(this, getString(R.string.erro_no_sql));
             e.printStackTrace();
         }
     }

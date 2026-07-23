@@ -13,7 +13,7 @@ public class RetornoFormaPagamento extends Retorno {
     }
     public RetornoFormaPagamento(boolean operacaoFinalizada, String mensagem,
                           List<FormaPagamento> formaPag) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.formaPag = formaPag;
     }
 

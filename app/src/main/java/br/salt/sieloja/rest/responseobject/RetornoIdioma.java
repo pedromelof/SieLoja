@@ -8,12 +8,12 @@ public class RetornoIdioma extends Retorno{
 
     private List<Idioma> idioma;
     public RetornoIdioma() {
-        super(true, "");
+        super(true, "", "");
         this.idioma = null;
     }
     public RetornoIdioma(boolean operacaoFinalizada, String mensagem,
                          List<Idioma> idioma) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.idioma = idioma;
     }
     public List<Idioma> getIdioma() {

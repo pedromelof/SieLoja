@@ -68,7 +68,7 @@ public class ParcialIndividualActivity extends BaseActivity {
             Usuario usuario = usuarioController.getUsuarioLogado();
 
             SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat formatoHora = new SimpleDateFormat("hh:mm:ss");
+            SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
             String dataFormatada = formatoData.format(new Date());
             String horaFormatada = formatoHora.format(new Date());
             binding.valLoja.setText(empresa.getFantasia());
@@ -123,7 +123,7 @@ public class ParcialIndividualActivity extends BaseActivity {
         new Thread(() -> {
             runOnUiThread(() -> startProgress());
             try {
-                parcialController.restParcialIndividualImpre("");
+                parcialController.restParcialIndividualImpre(numPed);
                 runOnUiThread(() -> stopProgress(getString(R.string.impressao_realizada_com_sucesso)));
             } catch (JSONException e) {
                 runOnUiThread(() -> stopProgress(getString(R.string.erro_no_json) + e.getMessage()));

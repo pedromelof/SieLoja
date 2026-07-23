@@ -13,7 +13,7 @@ public class RetornoParcial extends Retorno{
     }
 
     public RetornoParcial(boolean operacaoFinalizada, String mensagem, List<Parcial> parcial) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.parcial = parcial;
     }
 

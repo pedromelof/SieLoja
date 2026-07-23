@@ -1,5 +1,6 @@
 package br.salt.sieloja.view;
 
+import static br.salt.sieloja.view.util.Alert.dialog;
 import static br.salt.sieloja.view.util.Alert.dialogValidation;
 
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import br.salt.sieloja.controller.ConsumoController;
 import br.salt.sieloja.controller.ItemController;
 import br.salt.sieloja.controller.ParcialController;
 import br.salt.sieloja.databinding.ActivityConsumoTextBinding;
+import br.salt.sieloja.rest.responseobject.Retorno;
 import br.salt.sieloja.view.adapter.ConsumoAdapter;
 import br.salt.sieloja.view.util.Alert;
 import br.salt.sieloja.view.util.BaseActivity;
@@ -59,7 +61,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         super.onCreate(savedInstanceState);
@@ -100,12 +102,12 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
             usuario = usuarioController.getUsuarioLogado();
             consumo = consumoController.getConsumoAberto();
             configuracoes = configuracoesController.getConfiguracoes();
-            if(consumo == null){
+            if (consumo == null) {
                 consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "00000", "00001", "00001");
                 consumoController.salvarConsumo(consumo);
             }
 
-            if(Integer.parseInt(usuario.getNivelDeAcesso()) < 22){
+            if (Integer.parseInt(usuario.getNivelDeAcesso()) < 22) {
                 binding.btnValor.setEnabled(false);
             }
 
@@ -116,7 +118,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
             binding.spinnerFormaP.setSelection(getIdItemArray(formaPag, fp.getDesfpg()));
             binding.spinnerTipoP.setSelection(getIdItemArray(tipoPag, tp.getDestpg()));
 
-            if(configuracoes.isAlteraData()){
+            if (configuracoes.isAlteraData()) {
                 calendar.setTime(consumo.getDate());
             }
 
@@ -131,7 +133,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
             binding.btnItem.setOnItemClickListener((parent, view, position, id) -> {
                 try {
                     item = itemController.getItemFilterToString(adapterList.getItem(position));
-                    DecimalFormat form  = new DecimalFormat("#####0.00");
+                    DecimalFormat form = new DecimalFormat("#####0.00");
                     binding.btnValor.setText(String.valueOf(form.format(item.getPreco())));
                     binding.btnQtd.requestFocus();
                 } catch (SQLException e) {
@@ -167,13 +169,13 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }
     };
 
-    public void fecharConsumo(){
+    public void fecharConsumo() {
         limparTela();
         Alert.dialog(this, getString(R.string.venda_cancelado_com_sucesso));
     }
 
-    public void btn_data(){
-        if(configuracoes.isAlteraData()){
+    public void btn_data() {
+        if (configuracoes.isAlteraData()) {
             View view;
             view = (View) LayoutInflater.from(this).inflate(R.layout.dialog_data, null);
             datePicker = (DatePicker) view.findViewById(R.id.datePicker);
@@ -182,17 +184,17 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }
     }
 
-    public void btn_add(){
+    public void btn_add() {
         String quantidade = binding.btnQtd.getText().toString();
-        if(item == null){
+        if (item == null) {
             Alert.dialog(this, getString(R.string.informe_item));
-        } else if(quantidade.equalsIgnoreCase("")){
+        } else if (quantidade.equalsIgnoreCase("")) {
             Alert.dialog(this, getString(R.string.quantidade_maior_que_zero));
         } else {
             try {
                 this.codBarra = codBarraController.getListCodBarra(item.getCodigo());
                 String[] cb = codBarraController.getListCodBarra(codBarra);
-                if(codBarra.size() > 1){
+                if (codBarra.size() > 1) {
                     Alert.dialogListItems(this, onClickListenerCodBarra, cb);
                 } else {
                     addItem(-1);
@@ -221,7 +223,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
             double qtd = Double.parseDouble(quantidade);
             double valor = Double.parseDouble(txt_valor);
             ItemConsumo itemConsumo;
-            if (which == -1){
+            if (which == -1) {
                 itemConsumo = new ItemConsumo(consumo, item.getCodigo(), qtd, "", "", 0, valor);
             } else {
                 CodBarra cb = codBarra.get(which);
@@ -243,8 +245,8 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }
     }
 
-    public void button_finalizar(){
-        if(validaCampos()){
+    public void button_finalizar() {
+        if (validaCampos()) {
             try {
                 finalizarConsumo();
             } catch (Exception e) {
@@ -254,19 +256,20 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }
     }
 
-    public void button_cancelar(){
+    public void button_cancelar() {
         dialogValidation(this, getString(R.string.confirmar_cancelamento_venda), onClickListener);
     }
 
-    public void button_parcial(){
-        parcial();
+    public void button_parcial() {
+//        parcial();
+            executarImpressao(numPed);
     }
 
-    public void parcial(){
+    public void parcial() {
         new Thread(() -> {
             runOnUiThread(() -> startProgress());
             try {
-                if(consumoController.getAllItemConsumo().size() > 0){
+                if (consumoController.getAllItemConsumo().size() > 0) {
                     parcialController.transformarConsumoEmParcial();
                     Intent intent = new Intent(this, ParcialAcumuladoActivity.class);
                     intent.putExtra("data", calendar.getTime());
@@ -285,15 +288,15 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }).start();
     }
 
-    public boolean validaCampos(){
+    public boolean validaCampos() {
         boolean valida = false;
         try {
             Configuracoes configuracoes = configuracoesController.getConfiguracoes();
-            if(!consumoController.isValidationItensLancados()){
+            if (!consumoController.isValidationItensLancados()) {
                 Alert.dialog(this, getString(R.string.item_lansado_incorretamente));
-            }else if(adapter.getCount() < 1){
+            } else if (adapter.getCount() < 1) {
                 Alert.dialog(this, getString(R.string.item_lansado_incorretamente));
-            } else if(isConnectedInternet(this) && isConnectedWS(configuracoes.getIpWebService())){
+            } else if (isConnectedInternet(this) && isConnectedWS(configuracoes.getIpWebService())) {
                 valida = true;
             }
         } catch (SQLException e) {
@@ -306,7 +309,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         return valida;
     }
 
-    public void limparTela(){
+    public void limparTela() {
         try {
             consumoController.deletarAll();
             consumo = new Consumo("", "", usuario.getCodigo(), calendar.getTime(), "", "", "");
@@ -325,7 +328,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }
     }
 
-    public void finalizarConsumo(){
+    public void finalizarConsumo() {
         new Thread(() -> {
             runOnUiThread(() -> startProgress());
             try {
@@ -338,11 +341,15 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
                 consumo.setCodCliente(codCliente);
                 consumo.setCodFormaPag(codForma);
                 consumo.setCodTipoPag(codTipo);
+
+                Retorno retorno;
                 if (configuracoes.isAlteraData()) {
-                    consumoController.restConsumo(consumo, usuario, calendar.getTime(), calendar.getTime());
+                    retorno = consumoController.restConsumo(consumo, usuario, calendar.getTime(), calendar.getTime());
                 } else {
-                    consumoController.restConsumo(consumo, usuario, null, null);
+                    retorno = consumoController.restConsumo(consumo, usuario, null, null);
                 }
+                numPed = retorno.getNumPed();
+
                 runOnUiThread(() -> {
                     limparTela();
                     stopProgress();
@@ -350,11 +357,9 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(ConsumoTextActivity.this, ParcialIndividualActivity.class);
-                                    intent.putExtra("numPed", numPed);
-                                    startActivity(intent);
-                                }
-                            });
+                                    executarImpressao(numPed);
+                                }});
+
                 });
             } catch (JSONException | SQLException e) {
                 runOnUiThread(() -> stopProgress(getString(R.string.erro_no_sql) + e.getMessage()));
@@ -365,6 +370,45 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
             }
         }).start();
     }
+
+    private void executarImpressao(String pNumPed) {
+        new Thread(() -> {
+            if (pNumPed == "" || pNumPed == null) {
+                runOnUiThread(() -> {
+                    dialog(this, getString(R.string.nenhuma_venda_foi_encontrado),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                });
+            }
+
+            runOnUiThread(() -> startProgress());
+            try {
+                parcialController.restParcialIndividual(numPed);
+                if (parcialController.isVerificaSeExisteParcial()) {
+                    Intent intent = new Intent(ConsumoTextActivity.this, ParcialIndividualActivity.class);
+                    intent.putExtra("numPed", numPed);
+                    startActivity(intent);
+                    runOnUiThread(() -> stopProgress());
+                } else {
+                    stopProgress(getString(R.string.nenhuma_venda_foi_encontrado));
+                    runOnUiThread(() -> {
+                        dialog(this, getString(R.string.nenhuma_venda_foi_encontrado),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                    });
+                }
+            } catch (Exception e) {
+                runOnUiThread(() -> stopProgress("Erro: " + e.getMessage()));
+            }
+        }).start();
+    }
+
 
     public void calculeHeightListView() {
         int totalHeight = 0;
@@ -391,7 +435,7 @@ public class ConsumoTextActivity extends BaseActivity implements ConsumoActivity
         }
     }
 
-    public void data(){
+    public void data() {
         try {
             int day = datePicker.getDayOfMonth();
             int month = datePicker.getMonth();

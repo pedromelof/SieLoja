@@ -12,7 +12,7 @@ public class RetornoGrupo extends Retorno {
     }
     public RetornoGrupo(boolean operacaoFinalizada, String mensagem,
                         List<Grupo> grupos) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.grupos = grupos;
     }
     public List<Grupo> getGrupos() {

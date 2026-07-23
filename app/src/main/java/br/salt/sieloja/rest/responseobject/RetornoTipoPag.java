@@ -13,7 +13,7 @@ public class RetornoTipoPag  extends Retorno  {
     }
     public RetornoTipoPag(boolean operacaoFinalizada, String mensagem,
                                  List<TipoPagamento> tipoPag) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.tipoPag = tipoPag;
     }
 

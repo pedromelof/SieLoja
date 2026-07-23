@@ -12,7 +12,7 @@ public class RetornoEmpresa extends Retorno  {
     }
     public RetornoEmpresa(boolean operacaoFinalizada, String mensagem,
                           List<Empresa> empresas) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.empresas = empresas;
     }
     public List<Empresa> getEmpresas() {

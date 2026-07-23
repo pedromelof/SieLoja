@@ -167,7 +167,7 @@ public class ConsumoController extends DatabaseManager {
         return totalConsumo;
     }
 
-    public void restConsumo(Consumo consumo, Usuario usuario, Date dataInicio, Date dataFim) throws JSONException, SQLException, Exception{
+    public Retorno restConsumo(Consumo consumo, Usuario usuario, Date dataInicio, Date dataFim) throws JSONException, SQLException, Exception{
         Configuracoes configuracoes = configuracoesController.getConfiguracoes();
         EnvioConsumo envio = new EnvioConsumo();
         envio.setIpBanco(configuracoes.getIpBancoDeDados());
@@ -205,6 +205,7 @@ public class ConsumoController extends DatabaseManager {
         Retorno retorno = call.execute().body();
         if(!retorno.isOperacaoFinalizada())
             throw new Exception(retorno.getMensagem());
+        return retorno;
     }
 
     public List<EnvioItemConsumo> restItemConsumo() throws SQLException, JSONException{

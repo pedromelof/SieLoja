@@ -9,7 +9,7 @@ public class RetornoCliente extends Retorno {
     private List<Cliente> clientes;
     public RetornoCliente(){ super(); }
     public RetornoCliente(boolean operacaoFinalizada, String mensagem,List<Cliente> clientes){
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.clientes = clientes;
     }
 

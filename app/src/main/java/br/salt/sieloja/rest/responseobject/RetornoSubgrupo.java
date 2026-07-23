@@ -8,12 +8,12 @@ public class RetornoSubgrupo extends Retorno{
 
     private List<Subgrupo> subgrupos;
     public RetornoSubgrupo() {
-        super(true, "");
+        super(true, "", "");
         this.subgrupos = null;
     }
     public RetornoSubgrupo(boolean operacaoFinalizada, String mensagem,
                            List<Subgrupo> subgrupos) {
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.subgrupos = subgrupos;
     }
     public List<Subgrupo> getSubgrupos() {

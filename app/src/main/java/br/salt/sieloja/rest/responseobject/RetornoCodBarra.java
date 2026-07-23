@@ -12,7 +12,7 @@ public class RetornoCodBarra extends Retorno {
     public RetornoCodBarra(){ super(); }
 
     public RetornoCodBarra(boolean operacaoFinalizada, String mensagem,List<CodBarra> codBarras){
-        super(operacaoFinalizada, mensagem);
+        super(operacaoFinalizada, mensagem, "");
         this.codBarras = codBarras;
     }
 

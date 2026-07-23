@@ -22,6 +22,7 @@ import br.salt.sieloja.rest.responseobject.RetornoParcial;
 import br.salt.sieloja.rest.responseobject.RetornoSubgrupo;
 import br.salt.sieloja.rest.responseobject.RetornoTipoPag;
 import br.salt.sieloja.rest.responseobject.RetornoUsuario;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 public interface Request {
@@ -48,6 +49,9 @@ public interface Request {
 
     @PUT("webresources/parcial/comercio")
     Call<RetornoParcial> requestParcial(@Body EnvioParcial envio);
+
+    @PUT("webresources/parcial/comercio/{numPed}")
+    Call<RetornoParcial> requestParcialIndividual(@Path("numPed") String numPed, @Body EnvioParcial envio);
 
     @PUT("webresources/parcial/imprimir")
     Call<Retorno> requestImprimirParcial(@Body EnvioConsumo envio);
